@@ -17,9 +17,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// jpa 관련 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'org.projectlombok:lombok:1.18.18'
+    runtimeOnly 'mysql:mysql-connector-java'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//swagger
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+	//geocoding
+	implementation group: 'com.google.code.geocoder-java', name: 'geocoder-java', version: '0.16'
+
+
 }
 
 test {
