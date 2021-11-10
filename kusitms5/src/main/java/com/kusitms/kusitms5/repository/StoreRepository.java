@@ -1,7 +1,6 @@
 package com.kusitms.kusitms5.repository;
 
-import com.kusitms.kusitms5.domain.Market;
-import com.kusitms.kusitms5.domain.Store;
+import com.kusitms.kusitms5.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,15 +12,15 @@ import java.util.List;
 public class StoreRepository {
     private final EntityManager em;
 
-
-    public List<Store> findAll(){ // 모든 시장의 점포 목록 불러오기
-        return em.createQuery("select s from Store s",
-                Store.class)
-                .getResultList();
+    public Store findById(Long id){     // 레시피 검색
+        return em.find(Store.class, id);
+    }
+    public Review findReview(Long id){     // 레시피 검색
+        return em.find(Review.class, id);
     }
 
-    public List<Store> findOne(String name){ // 해당 시장에 해당하는 점포 목록 불러오기
-        return em.createQuery("select s from Store s inner join fetch s.market m where m.marketName = :name",
+    public List<Store> findOne(String name){ // 이름을 통한 점포 검색 결과 불러오기
+        return em.createQuery("select s from Store s where s.storeName = :name",
                 Store.class)
                 .setParameter("name", name)
                 .getResultList();
@@ -30,6 +29,25 @@ public class StoreRepository {
     public List<Store> findGift(){ // 온누리 상품권 사용점포 목록 불러오기
         return em.createQuery("select s from Store s where s.storeGiftcard = true",
                 Store.class)
+                .getResultList();
+    }
+
+    public void saveReview(Review review) {
+        em.persist(review);
+    } // 리뷰 작성
+
+    public void saveReport(Report report) {
+        em.persist(report);
+    } // 리뷰 신고 작성
+
+    public void saveModify(Modify modify) {
+        em.persist(modify);
+    } // 가게 수정사항 작성
+    
+    public List<Review> findReviewList(Store store){ // 가게 별 리뷰 전체 불러오기
+        return em.createQuery("select r from Review r where r.store = :store",
+                Review.class)
+                .setParameter("store", store)
                 .getResultList();
     }
 
