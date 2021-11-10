@@ -8,6 +8,12 @@ group = 'com.kusitms'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -17,10 +23,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// jpa 관련 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// lombok
     implementation 'org.projectlombok:lombok:1.18.18'
-    runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.projectlombok:lombok'
 
+	// mysql
+    runtimeOnly 'mysql:mysql-connector-java'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	//swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
@@ -29,7 +40,14 @@ dependencies {
 	//geocoding
 	implementation group: 'com.google.code.geocoder-java', name: 'geocoder-java', version: '0.16'
 
+	//spring security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	//jwt
+	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 }
 
 test {
