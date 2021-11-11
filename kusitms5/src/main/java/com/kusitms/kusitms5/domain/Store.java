@@ -1,10 +1,13 @@
 package com.kusitms.kusitms5.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,4 +38,8 @@ public class Store {
     @JsonManagedReference
     @JoinColumn(name = "market_id")
     private Market market;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Review> reviews = new ArrayList<>();
 }
