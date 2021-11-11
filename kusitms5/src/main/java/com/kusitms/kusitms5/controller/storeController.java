@@ -3,31 +3,34 @@ package com.kusitms.kusitms5.controller;
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
 import com.google.code.geocoder.model.*;
-import com.kusitms.kusitms5.domain.Modify;
-import com.kusitms.kusitms5.domain.Report;
-import com.kusitms.kusitms5.domain.Review;
-import com.kusitms.kusitms5.domain.Store;
+import com.kusitms.kusitms5.domain.*;
 import com.kusitms.kusitms5.dto.reviewDto;
 import com.kusitms.kusitms5.dto.storeDto;
 import com.kusitms.kusitms5.response.BasicResponse;
 import com.kusitms.kusitms5.response.CommonResponse;
 import com.kusitms.kusitms5.response.ErrorResponse;
+import com.kusitms.kusitms5.service.LikeService;
 import com.kusitms.kusitms5.service.StoreService;
+import com.kusitms.kusitms5.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class storeController {
-
+    private final UserService userService;
     private final StoreService storeService;
+
 
     @GetMapping(value = "/store/getOne") // 특정 점포 정보 조회
     public ResponseEntity<? extends BasicResponse> storeList(String name) {

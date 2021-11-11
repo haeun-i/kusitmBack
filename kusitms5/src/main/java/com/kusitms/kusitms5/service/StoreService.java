@@ -21,7 +21,7 @@ public class StoreService {
 
     @Transactional
     public Review addReview(Long storeId, String memo, int score) {
-        User user = userRepository.findOne(1L);
+        User user = userRepository.findOneWithAuthoritiesByUsername("haeun").get();
         Store store = storeRepository.findById(storeId);
 
         Review review = Review.createReview(user, store, memo, score);
@@ -32,7 +32,7 @@ public class StoreService {
 
     @Transactional
     public Modify addModify(Long storeId, String memo) {
-        User user = userRepository.findOne(1L);
+        User user = userRepository.findOneWithAuthoritiesByUsername("haeun").get();
         Store store = storeRepository.findById(storeId);
 
         Modify modify = Modify.createModify(store, memo);
@@ -43,7 +43,7 @@ public class StoreService {
 
     @Transactional
     public Report addReport(Long reviewId, String memo) {
-        User user = userRepository.findOne(1L);
+        User user = userRepository.findOneWithAuthoritiesByUsername("haeun").get();
         Review review = storeRepository.findReview(reviewId);
 
         Report report = Report.createReport(review, memo);

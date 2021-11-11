@@ -1,29 +1,54 @@
 package com.kusitms.kusitms5.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import java.util.Set;
 
-@Getter
-@Setter
+
 @Entity
-@Table(name = "userInfo")
+@Table(name = "user_info")
+@Getter // lombok어노테이션으로 get, set, 생성자를 생성함
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
+
+    @JsonIgnore
     @Id
-    @GeneratedValue
-    @Column(name = "user_id", nullable = false, unique = true) //pk 설정
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "user_pw", nullable = false)
-    private String userPw;
+    @JsonIgnore
+    @Column(name = "user_pw", length = 100)
+    private String password;
 
-    @Column(name = "user_name", nullable = false)
-    private String userName;
+    @Column(name = "user_name", length = 50, unique = true)
+    private String username;
+
+    @Column(name = "user_phone")
+    private String phone;
+
+    @JsonIgnore
+    @Column(name = "user_activated")
+    private boolean activated;
+
+    @Column(name = "user_nickname", length = 50)
+    private String nickname;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
@@ -33,6 +58,5 @@ public class User {
     @JsonBackReference
     private List<Like> likes = new ArrayList<>();
 
+
 }
-
-

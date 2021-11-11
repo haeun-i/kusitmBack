@@ -17,7 +17,7 @@ public class reviewDto {
     int reviewScore;
 
     public reviewDto(Review review){
-        reviewUserName = review.getUser().getUserName();
+        reviewUserName = review.getUser().getNickname();
         reviewMemo = review.getReviewMemo();
         reviewScore = review.getReviewScore();
     }
