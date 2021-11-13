@@ -2,23 +2,37 @@ package com.kusitms.kusitms5.controller;
 
 import com.kusitms.kusitms5.domain.User;
 import com.kusitms.kusitms5.dto.UserDto;
+import com.kusitms.kusitms5.dto.storeDto;
+import com.kusitms.kusitms5.response.BasicResponse;
+import com.kusitms.kusitms5.response.CommonResponse;
+import com.kusitms.kusitms5.service.LikeService;
 import com.kusitms.kusitms5.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final LikeService likeService;
 
-    public UserController(UserService userService) {
+
+    public UserController(UserService userService, LikeService likeService) {
         this.userService = userService;
+        this.likeService = likeService;
     }
 
     @PostMapping("/test-redirect")
@@ -46,5 +60,32 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN권한만
     public ResponseEntity<User> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
+    }
+
+    @PostMapping("/likes")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+//    })
+    public ResponseEntity<? extends BasicResponse> likes(@RequestParam("storeId") Long storeId){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String id = authentication.getName();
+//        System.out.println(authentication);
+//        Optional<User> user = userService.getUserWithAuthorities(id);
+//
+//        likeService.likes(storeId, user.get().getUserId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/unlikes")
+    public ResponseEntity<? extends BasicResponse> unlikes(@RequestParam("storeId") Long storeId){
+        likeService.unlikes(storeId, 6L);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/store/like")
+    public ResponseEntity<? extends BasicResponse> likeList(@RequestParam("userId") Long userId){
+        List<storeDto> likeStores = likeService.findLike(userId);
+        return ResponseEntity.ok().body(new CommonResponse<List<storeDto>>(likeStores));
     }
 }
