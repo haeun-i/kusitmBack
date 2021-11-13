@@ -23,9 +23,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// jpa 관련 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 	// lombok
     implementation 'org.projectlombok:lombok:1.18.18'
 	annotationProcessor 'org.projectlombok:lombok'
+
 
 	// mysql
     runtimeOnly 'mysql:mysql-connector-java'
@@ -34,8 +36,10 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	//swagger
+
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
 
 	//geocoding
 	implementation group: 'com.google.code.geocoder-java', name: 'geocoder-java', version: '0.16'

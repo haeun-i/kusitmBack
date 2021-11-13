@@ -1,6 +1,7 @@
 package com.kusitms.kusitms5.repository;
 
 import com.kusitms.kusitms5.domain.User;
+
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
