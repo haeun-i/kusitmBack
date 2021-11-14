@@ -90,10 +90,15 @@ public class UserController {
     }
 
     // 아이디 중복확인 : 존재하면 true, 없으면 false
-    @GetMapping("/check-duplicate/{username}")
+    @GetMapping("/check-duplicate/id/{username}")
     public ResponseEntity<Boolean> vaildateId(@PathVariable String username) {
-        userService.validateDuplicateUsername(username);
         return ResponseEntity.ok(userService.validateDuplicateUsername(username));
+    }
+
+    // 닉네임 중복확인 : 존재하면 true, 없으면 false
+    @GetMapping("/check-duplicate/nickname/{nickname}")
+    public ResponseEntity<Boolean> vaildateNickname(@PathVariable String nickname) {
+        return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
     }
 
 }
