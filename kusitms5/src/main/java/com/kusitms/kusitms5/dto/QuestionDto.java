@@ -4,7 +4,7 @@ import com.kusitms.kusitms5.domain.User;
 
 public class QuestionDto {
 
-    private Long id;
+    //private Long id;
 
     private String title;
 
@@ -15,20 +15,20 @@ public class QuestionDto {
     public QuestionDto(){
 
     }
-    public QuestionDto(Long id, String title, String content, String username) {
-        this.id = id;
+    public QuestionDto(String title, String content, String username) {
+        //this.id = id;
         this.title = title;
         this.content = content;
         this.username = username;
     }
 
-    public Long getId() {
+/*    public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
+    }*/
 
     public String getTitle() {
         return title;

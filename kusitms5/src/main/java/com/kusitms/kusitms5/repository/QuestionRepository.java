@@ -8,4 +8,5 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Override
     List<Question> findAll();
+
 }

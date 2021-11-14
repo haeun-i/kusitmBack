@@ -20,6 +20,14 @@ public class Question {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Question() {
+    }
+
+    public Question(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public Long getId() {
         return id;
     }
