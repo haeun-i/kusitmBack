@@ -88,4 +88,12 @@ public class UserController {
         List<storeDto> likeStores = likeService.findLike(userId);
         return ResponseEntity.ok().body(new CommonResponse<List<storeDto>>(likeStores));
     }
+
+    // 아이디 중복확인 : 존재하면 true, 없으면 false
+    @GetMapping("/check-duplicate/{username}")
+    public ResponseEntity<Boolean> vaildateId(@PathVariable String username) {
+        userService.validateDuplicateUsername(username);
+        return ResponseEntity.ok(userService.validateDuplicateUsername(username));
+    }
+
 }

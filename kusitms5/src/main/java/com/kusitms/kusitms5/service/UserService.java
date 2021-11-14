@@ -56,4 +56,15 @@ public class UserService {
     public Optional<User> getMyUserWithAuthorities() {
         return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
+
+    // 중복 회원 검증
+    public boolean validateDuplicateUsername(String username) {
+
+        return userRepository.existsByUsername(username);
+        /*userRepository.findByUsername(username)
+                .ifPresent(user -> {
+
+                });
+        return false;*/
+    }
 }
