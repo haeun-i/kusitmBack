@@ -1,7 +1,7 @@
 package com.kusitms.kusitms5.controller;
 
-import com.kusitms.kusitms5.dto.marketDto;
-import com.kusitms.kusitms5.dto.storeDto;
+import com.kusitms.kusitms5.dto.MarketDto;
+import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.response.BasicResponse;
 import com.kusitms.kusitms5.response.CommonResponse;
 import com.kusitms.kusitms5.service.MarketService;
@@ -22,38 +22,38 @@ public class filterController {
 
     @GetMapping(value = "/market/filter1/0") // 모든 상설시장 목록 조회
     public ResponseEntity<? extends BasicResponse> marketPermanent() {
-        List<marketDto> markets = marketService.findPermanent();
-        return ResponseEntity.ok().body(new CommonResponse<List<marketDto>>(markets));
+        List<MarketDto> markets = marketService.findPermanent();
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
     @GetMapping(value = "/market/filter1/1") // 모든 비상설시장 목록 조회
     public ResponseEntity<? extends BasicResponse> marketNotPermanent() {
-        List<marketDto> markets = marketService.findNotPermanent();
-        return ResponseEntity.ok().body(new CommonResponse<List<marketDto>>(markets));
+        List<MarketDto> markets = marketService.findNotPermanent();
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
     @GetMapping(value = "/market/filter/gift") // 온누리상품권 사용 가능 점포 목록 조회
     public ResponseEntity<? extends BasicResponse> storeGiftList() {
-        List<storeDto> stores = storeService.findGift();
-        return ResponseEntity.ok().body(new CommonResponse<List<storeDto>>(stores));
+        List<StoreDto> stores = storeService.findGift();
+        return ResponseEntity.ok().body(new CommonResponse<List<StoreDto>>(stores));
     }
 
     @GetMapping(value = "/market/filter2/small") // 모든 소규모 시장 목록 조회
     public ResponseEntity<? extends BasicResponse> marketSmall() {
-        List<marketDto> markets = marketService.findSmall();
-        return ResponseEntity.ok().body(new CommonResponse<List<marketDto>>(markets));
+        List<MarketDto> markets = marketService.findSmall();
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
     @GetMapping(value = "/market/filter2/medium") // 모든 중간규모 시장 목록 조회
     public ResponseEntity<? extends BasicResponse> marketMedium() {
-        List<marketDto> markets = marketService.findMedium();
-        return ResponseEntity.ok().body(new CommonResponse<List<marketDto>>(markets));
+        List<MarketDto> markets = marketService.findMedium();
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
     @GetMapping(value = "/market/filter2/big") // 모든 대규모 시장 목록 조회
     public ResponseEntity<? extends BasicResponse> marketBig() {
-        List<marketDto> markets = marketService.findBig();
-        return ResponseEntity.ok().body(new CommonResponse<List<marketDto>>(markets));
+        List<MarketDto> markets = marketService.findBig();
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
 }

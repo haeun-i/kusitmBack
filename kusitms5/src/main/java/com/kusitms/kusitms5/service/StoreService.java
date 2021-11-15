@@ -2,7 +2,7 @@ package com.kusitms.kusitms5.service;
 
 import com.kusitms.kusitms5.domain.*;
 import com.kusitms.kusitms5.dto.reviewDto;
-import com.kusitms.kusitms5.dto.storeDto;
+import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.repository.StoreRepository;
 import com.kusitms.kusitms5.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,21 +63,21 @@ public class StoreService {
         return reviewDtos;
     }
 
-    public List<storeDto> findOne(String name) {
+    public List<StoreDto> findOne(String name) {
         List<Store> stores = storeRepository.findOne(name);
-        List<storeDto> storeDtos = new ArrayList<>();
+        List<StoreDto> storeDtos = new ArrayList<>();
         for(Store store : stores) {
-            storeDto response = new storeDto(store);
+            StoreDto response = new StoreDto(store);
             storeDtos.add(response);
         }
         return storeDtos;
     }
 
-    public List<storeDto> findGift() {
+    public List<StoreDto> findGift() {
         List<Store> stores = storeRepository.findGift();
-        List<storeDto> storeDtos = new ArrayList<>();
+        List<StoreDto> storeDtos = new ArrayList<>();
         for(Store store : stores) {
-            storeDto response = new storeDto(store);
+            StoreDto response = new StoreDto(store);
             storeDtos.add(response);
         }
         return storeDtos;

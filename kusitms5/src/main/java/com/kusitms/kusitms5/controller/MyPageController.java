@@ -1,9 +1,14 @@
 package com.kusitms.kusitms5.controller;
 
+import com.kusitms.kusitms5.domain.Market;
 import com.kusitms.kusitms5.domain.Notice;
 import com.kusitms.kusitms5.domain.Question;
+import com.kusitms.kusitms5.domain.Store;
+import com.kusitms.kusitms5.dto.MarketDto;
 import com.kusitms.kusitms5.dto.NoticeDto;
 import com.kusitms.kusitms5.dto.QuestionDto;
+import com.kusitms.kusitms5.dto.StoreDto;
+import com.kusitms.kusitms5.service.MarketService;
 import com.kusitms.kusitms5.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import java.util.List;
 public class MyPageController {
 
     private final MyPageService myPageService;
+    private final MarketService marketService;
 
     @GetMapping("/mypage/notice")
     public List<NoticeDto> findNotice() {
@@ -38,4 +44,15 @@ public class MyPageController {
     ){
         return ResponseEntity.ok(myPageService.registerQuestion(questionDto));
     }
+
+
+    @PostMapping("mypage/report-store")
+    public ResponseEntity<StoreDto> reportStore( // 시장이름, 점포이름, 점포주소, 시장종류
+            @Valid @RequestBody StoreDto storeDto
+    ){
+        return ResponseEntity.ok(myPageService.reportStore(storeDto));
+    }
+
+
+
 }

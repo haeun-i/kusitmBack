@@ -5,6 +5,7 @@ import com.kusitms.kusitms5.jwt.JwtAccessDeniedHandler;
 import com.kusitms.kusitms5.jwt.JwtAuthenticationEntryPoint;
 import com.kusitms.kusitms5.jwt.JwtSecurityConfig;
 import com.kusitms.kusitms5.jwt.TokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -64,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers()
                 .frameOptions()
-                .sameOrigin()
+                .sameOrigin() // oauth -> disable()
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .and()
