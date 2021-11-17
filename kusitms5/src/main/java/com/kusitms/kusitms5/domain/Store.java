@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "storeInfo")
 public class Store {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true) //pk 설정
     private Long storeId;
 

@@ -12,11 +12,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class marketDto {
+public class MarketDto {
     String marketName;
     int storeCnt;
 
-    public marketDto(Market market){
+    public MarketDto(Market market){
         marketName = market.getMarketName();
         storeCnt = market.getStoreCnt();
     }

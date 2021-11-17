@@ -2,7 +2,7 @@ package com.kusitms.kusitms5.service;
 
 import com.kusitms.kusitms5.domain.Like;
 import com.kusitms.kusitms5.domain.Store;
-import com.kusitms.kusitms5.dto.storeDto;
+import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.repository.LikeRepository;
 import com.kusitms.kusitms5.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,12 @@ public class LikeService {
         likeRepository.unlikes(storeId, userId);
     }
 
-    public List<storeDto> findLike(Long userId) {
+    public List<StoreDto> findLike(Long userId) {
         List<Like> likes = likeRepository.likeList(userId);
-        List<storeDto> likeStores = new ArrayList<>();
+        List<StoreDto> likeStores = new ArrayList<>();
         for(Like like : likes) {
             Store store = like.getStore();
-            storeDto response = new storeDto(store);
+            StoreDto response = new StoreDto(store);
             likeStores.add(response);
         }
         return likeStores;

@@ -51,4 +51,9 @@ public class StoreRepository {
                 .getResultList();
     }
 
+    public void saveStore(Store store) {
+        em.persist(store);
+    }
+
+
 }
