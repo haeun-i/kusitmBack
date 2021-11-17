@@ -25,13 +25,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	// lombok
-    implementation 'org.projectlombok:lombok:1.18.18'
+	implementation 'org.projectlombok:lombok:1.18.18'
 	annotationProcessor 'org.projectlombok:lombok'
 
 
 	// mysql
-    runtimeOnly 'mysql:mysql-connector-java'
-	
+	runtimeOnly 'mysql:mysql-connector-java'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
@@ -56,8 +56,6 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
-	// 로그
-	logging.level.com.amazonaws.util.EC2MetadataUtils: error
 }
 
 test {
