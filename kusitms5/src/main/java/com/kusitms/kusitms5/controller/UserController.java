@@ -23,6 +23,7 @@ public class UserController {
     private final UserService userService;
     private final LikeService likeService;
 
+    //private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     public UserController(UserService userService, LikeService likeService) {
         this.userService = userService;
@@ -92,6 +93,13 @@ public class UserController {
     // 닉네임 중복확인 : 존재하면 true, 없으면 false
     @GetMapping("/check-duplicate/nickname/{nickname}")
     public ResponseEntity<Boolean> vaildateNickname(@PathVariable String nickname) {
+        return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
+    }
+
+    // push알림 테스트
+    @GetMapping("/test/pushAlarm")
+    public ResponseEntity<Boolean> testPuahAlarm(@PathVariable String nickname) {
+
         return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
     }
 
