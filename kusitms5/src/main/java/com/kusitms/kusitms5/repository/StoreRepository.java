@@ -55,5 +55,11 @@ public class StoreRepository {
         em.persist(store);
     }
 
+    public List<Review> findUserReview(User user){ // 사용자가 작성한 리뷰 전체 불러오기
+        return em.createQuery("select r from Review r where r.user = :user",
+                Review.class)
+                .setParameter("user", user)
+                .getResultList();
+    }
 
 }

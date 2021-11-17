@@ -3,6 +3,7 @@ package com.kusitms.kusitms5.service;
 import com.kusitms.kusitms5.domain.*;
 import com.kusitms.kusitms5.dto.reviewDto;
 import com.kusitms.kusitms5.dto.StoreDto;
+import com.kusitms.kusitms5.repository.ModifyRepository;
 import com.kusitms.kusitms5.repository.StoreRepository;
 import com.kusitms.kusitms5.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,13 @@ import java.util.List;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final ModifyRepository modifyRepository;
 
 
     @Transactional
-    public Review addReview(Long storeId, String memo, int score) {
-        User user = userRepository.findOneWithAuthoritiesByUsername("haeun").get();
+    public Review addReview(String userName, Long storeId, String memo, int score) {
+
+        User user = userRepository.findOneWithAuthoritiesByUsername(userName).get();
         Store store = storeRepository.findById(storeId);
 
         Review review = Review.createReview(user, store, memo, score);
@@ -31,19 +34,20 @@ public class StoreService {
     }
 
     @Transactional
-    public Modify addModify(Long storeId, String memo) {
-        User user = userRepository.findOneWithAuthoritiesByUsername("haeun").get();
+    public Modify addModify(String userName, Long storeId, String memo) {
+
+        User user = userRepository.findOneWithAuthoritiesByUsername(userName).get();
         Store store = storeRepository.findById(storeId);
 
-        Modify modify = Modify.createModify(store, memo);
+        Modify modify = Modify.createModify(user, store, memo);
         storeRepository.saveModify(modify);
 
         return modify;
     }
 
     @Transactional
-    public Report addReport(Long reviewId, String memo) {
-        User user = userRepository.findOneWithAuthoritiesByUsername("haeun").get();
+    public Report addReport(String userName, Long reviewId, String memo) {
+        User user = userRepository.findOneWithAuthoritiesByUsername(userName).get();
         Review review = storeRepository.findReview(reviewId);
 
         Report report = Report.createReport(review, memo);
@@ -68,6 +72,10 @@ public class StoreService {
         List<StoreDto> storeDtos = new ArrayList<>();
         for(Store store : stores) {
             StoreDto response = new StoreDto(store);
+
+            Modify m = modifyRepository.getLastModify(store.getStoreId());
+            response.setUserName(m.getUser().getNickname());
+
             storeDtos.add(response);
         }
         return storeDtos;

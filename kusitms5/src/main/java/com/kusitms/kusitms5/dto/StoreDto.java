@@ -16,6 +16,7 @@ public class StoreDto {
     String storeCategory;
     String marketName;
     boolean storeGiftcard;
+    String userName; // 마지막으로 수정한 유저
 
     public StoreDto(String storeName, String storeAddress, String storePhone, String storeCategory, String marketName, boolean storeGiftcard) {
         this.storeName = storeName;
