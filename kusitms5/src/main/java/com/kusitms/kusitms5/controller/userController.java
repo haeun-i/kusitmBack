@@ -7,15 +7,20 @@ import com.kusitms.kusitms5.response.BasicResponse;
 import com.kusitms.kusitms5.response.CommonResponse;
 import com.kusitms.kusitms5.service.LikeService;
 import com.kusitms.kusitms5.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -57,29 +62,42 @@ public class UserController {
     }
 
     @PostMapping("/likes")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
-//    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
     public ResponseEntity<? extends BasicResponse> likes(@RequestParam("storeId") Long storeId){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String id = authentication.getName();
-//        System.out.println(authentication);
-//        Optional<User> user = userService.getUserWithAuthorities(id);
-//
-//        likeService.likes(storeId, user.get().getUserId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        likeService.likes(storeId, user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     @DeleteMapping("/unlikes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
     public ResponseEntity<? extends BasicResponse> unlikes(@RequestParam("storeId") Long storeId){
-        likeService.unlikes(storeId, 6L);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        likeService.unlikes(storeId, user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/store/like")
-    public ResponseEntity<? extends BasicResponse> likeList(@RequestParam("userId") Long userId){
-        List<StoreDto> likeStores = likeService.findLike(userId);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
+    public ResponseEntity<? extends BasicResponse> likeList(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        List<StoreDto> likeStores = likeService.findLike(user.get().getUserId());
         return ResponseEntity.ok().body(new CommonResponse<List<StoreDto>>(likeStores));
     }
 
@@ -93,6 +111,32 @@ public class UserController {
     @GetMapping("/check-duplicate/nickname/{nickname}")
     public ResponseEntity<Boolean> vaildateNickname(@PathVariable String nickname) {
         return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
+    }
+
+    @PutMapping("/modify-nickname/")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
+    public ResponseEntity<? extends BasicResponse> modifyNickname(String nickname){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        userService.modifyNickname(user.get(), nickname);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/user")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
+    public ResponseEntity<? extends BasicResponse> deleteUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        userService.delete(user.get());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

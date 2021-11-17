@@ -9,12 +9,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "marketInfo")
-public class Like {
+@Table(name = "loves")
+public class Love {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_store_id", nullable = false, unique = true) //pk 설정
-    private Long likeId;
+    private Long loveId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
