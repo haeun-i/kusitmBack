@@ -1,12 +1,12 @@
 package com.kusitms.kusitms5.service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-import com.kusitms.kusitms5.domain.Authority;
-import com.kusitms.kusitms5.domain.User;
+import com.kusitms.kusitms5.domain.*;
 import com.kusitms.kusitms5.dto.UserDto;
-import com.kusitms.kusitms5.repository.UserRepository;
+import com.kusitms.kusitms5.repository.*;
 import com.kusitms.kusitms5.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
+    private final ModifyRepository modifyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final QuestionRepository questionRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       StoreRepository storeRepository, QuestionRepository questionRepository,
+                       ModifyRepository modifyRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.storeRepository = storeRepository;
+        this.modifyRepository = modifyRepository;
+        this.questionRepository = questionRepository;
     }
 
     @Transactional
@@ -66,4 +74,30 @@ public class UserService {
     public boolean validateDuplicateNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
+
+    @Transactional
+    public void modifyNickname(User user, String nickname){
+        user.setNickname(nickname);
+        userRepository.save(user);
+    };
+
+    @Transactional
+    public void delete(User user){ // 수정 필요함
+        List<Question> questions = questionRepository.UserQuestionList(user.getUserId());
+        List<Modify> modifies = modifyRepository.UserModifyList(user.getUserId());
+        List<Review> reviews = storeRepository.findUserReview(user);
+
+        Optional<User> admin = userRepository.findByUsername("haeuni");
+        for(Question question : questions){
+            question.setUser(admin.get());
+        }
+        for(Review review : reviews){
+            review.setUser(admin.get());
+        }
+        for(Modify modify : modifies){
+            modify.setUser(admin.get());
+        }
+         userRepository.delete(user);
+//        likeRepository.delete(user);
+    };
 }

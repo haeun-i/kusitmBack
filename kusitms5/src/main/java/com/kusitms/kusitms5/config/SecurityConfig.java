@@ -79,7 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/likes").hasRole("USER")
                 .anyRequest().permitAll()
 
                 // JwtFilter을 addFilterBefore로 등록했던 JwtSecurityConfig클래스도 적용

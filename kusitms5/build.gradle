@@ -49,12 +49,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// s3
-	implementation 'org.srpingframework.cloud:spring-cloud-stater-aws:2.2.6.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 
 	//jwt
 	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	// 로그
+	logging.level.com.amazonaws.util.EC2MetadataUtils: error
 }
 
 test {

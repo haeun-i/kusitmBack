@@ -15,6 +15,7 @@ public class storeDto {
     String storePhone;
     String storeCategory;
     String marketName;
+    String userName; // 마지막으로 수정한 유저
 
     public storeDto(Store store){
         storeName = store.getStoreName();

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "storeModify")
+@Table(name = "store_modify")
 public class Modify {
 
     @Id
@@ -25,13 +25,20 @@ public class Modify {
     @Column(name = "modify_memo")
     private String modifyMemo;
 
-    public static Modify createModify(Store store, String memo){
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public static Modify createModify(User user, Store store, String memo){
 
         Modify modify = new Modify();
 
+        modify.setUser(user);
         modify.setStore(store);
         modify.setModifyMemo(memo);
 
         return modify;
     }
+
 }

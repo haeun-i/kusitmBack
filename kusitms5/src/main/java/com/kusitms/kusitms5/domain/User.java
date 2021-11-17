@@ -50,13 +50,17 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     @JsonBackReference
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Like> likes = new ArrayList<>();
+    private List<Love> loves = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private List<Modify> modifies = new ArrayList<>();
 
 
 }
