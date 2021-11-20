@@ -81,6 +81,13 @@ public class StoreService {
         return storeDtos;
     }
 
+    public Store findOneById(Long storeId) {
+        Store store = storeRepository.findById(storeId);
+
+        return store;
+    }
+
+
     public List<StoreDto> findGift() {
         List<Store> stores = storeRepository.findGift();
         List<StoreDto> storeDtos = new ArrayList<>();
