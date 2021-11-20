@@ -114,13 +114,13 @@ public class UserController {
         return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
     }
 
-<<<<<<< HEAD:kusitms5/src/main/java/com/kusitms/kusitms5/controller/UserController.java
     // push알림 테스트
     @GetMapping("/test/pushAlarm")
     public ResponseEntity<Boolean> testPuahAlarm(@PathVariable String nickname) {
 
         return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
-=======
+    }
+
     @PutMapping("/modify-nickname/")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
@@ -145,7 +145,7 @@ public class UserController {
 
         userService.delete(user.get());
         return new ResponseEntity<>(HttpStatus.OK);
->>>>>>> 146f59bf77e339b337392dd3da479655969e1d0b:kusitms5/src/main/java/com/kusitms/kusitms5/controller/userController.java
+
     }
 
 }
