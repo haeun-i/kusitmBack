@@ -42,4 +42,7 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store")
+    private List<Love> loves = new ArrayList<>();
 }
