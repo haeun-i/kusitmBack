@@ -113,6 +113,13 @@ public class UserController {
         return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
     }
 
+    // push알림 테스트
+    @GetMapping("/test/pushAlarm")
+    public ResponseEntity<Boolean> testPuahAlarm(@PathVariable String nickname) {
+
+        return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
+    }
+
     @PutMapping("/modify-nickname/")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")

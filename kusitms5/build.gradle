@@ -48,7 +48,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// s3
-	//implementation 'org.srpingframework.cloud:spring-cloud-stater-aws:2.2.6.RELEASE'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 
 	// oauth2
@@ -61,7 +60,6 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
-
 	// FCM - firebase sdk, okhttp
 	implementation 'com.google.firebase:firebase-admin:6.8.1'
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
@@ -71,6 +69,7 @@ dependencies {
 
 	// webSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 }
 
 test {
