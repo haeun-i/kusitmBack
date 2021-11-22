@@ -5,6 +5,7 @@ import com.kusitms.kusitms5.domain.Store;
 import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.repository.LoveRepository;
 
+import com.kusitms.kusitms5.repository.StoreRepository;
 import com.kusitms.kusitms5.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LikeService {
     private final LoveRepository loveRepository;
-    private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
 
     @Transactional
     public void likes(long storeId, long userId){
+        Store store = storeRepository.findById(storeId);
+
         loveRepository.likes(storeId, userId);
     }
 

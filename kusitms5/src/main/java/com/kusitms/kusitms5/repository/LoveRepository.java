@@ -24,4 +24,5 @@ public interface LoveRepository extends JpaRepository<Love, Long> {
     @Query(value="SELECT * FROM loves WHERE user_id = :userId", nativeQuery = true)
     List<Love> likeList(@Param("userId")long userId);
 
+
 }

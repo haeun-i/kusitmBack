@@ -100,4 +100,8 @@ public class UserService {
          userRepository.delete(user);
 //        likeRepository.delete(user);
     };
+
+    public void saveCnt(int cnt, long userId){
+        userRepository.saveCnt(cnt, userId);
+    }
 }

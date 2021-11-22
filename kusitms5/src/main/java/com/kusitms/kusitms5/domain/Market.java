@@ -31,4 +31,5 @@ public class Market {
     @OneToMany(mappedBy = "market", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Store> stores = new ArrayList<>();
+
 }
