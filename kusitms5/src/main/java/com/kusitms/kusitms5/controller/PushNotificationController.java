@@ -100,9 +100,9 @@ public class PushNotificationController {
         List<User> userList = likeService.findLikeUser(storeDto.getStoreName()); // get(0)부분 수정
         System.out.println("좋아요한 user 수 : " + userList.size());
 
-        for (User user:
+        for (User user :
                 userList) {
-            if(user.getDeviceToken().getToken() != null) {
+            if (user.getDeviceToken().getToken() != null) {
                 PushNotificationRequest request = new PushNotificationRequest();
                 request.setTitle("알림");
                 request.setMessage(updateMessage);

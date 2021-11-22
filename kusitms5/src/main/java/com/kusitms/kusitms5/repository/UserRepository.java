@@ -1,10 +1,16 @@
 package com.kusitms.kusitms5.repository;
 
+import com.kusitms.kusitms5.domain.StoreImage;
 import com.kusitms.kusitms5.domain.User;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 // repository : JPA레파지토리를 상속함
@@ -16,4 +22,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUsername(String username);
     boolean existsByNickname(String nickname);
+
+    @Modifying
+    @Transactional
+    @Query(value="UPDATE user_info SET user_click = :cnt WHERE user_id = :userId", nativeQuery = true)
+    void saveCnt(@Param("cnt")int cnt, @Param("userId")long userId);
+
 }

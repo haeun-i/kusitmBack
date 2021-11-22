@@ -1,5 +1,6 @@
 package com.kusitms.kusitms5.controller;
 
+import com.amazonaws.services.ec2.model.Image;
 import com.kusitms.kusitms5.domain.EventImage;
 import com.kusitms.kusitms5.domain.Store;
 import com.kusitms.kusitms5.dto.EventImageDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -46,13 +48,23 @@ public class GalleryController {
     @GetMapping("/eventImage/all")
     public ResponseEntity<? extends BasicResponse> eventAll() throws IOException {
         List<EventImage> images = imageService.findEventImages();
-        return ResponseEntity.ok().body(new CommonResponse<List<EventImage>>(images));
+        List<String> paths = new ArrayList<>();
+        for(EventImage image : images){
+            String path = image.getFilepath();
+            paths.add(path);
+        }
+        return ResponseEntity.ok().body(new CommonResponse<List<String>>(paths));
     }
 
     @GetMapping("/eventImage/pay")
     public ResponseEntity<? extends BasicResponse> eventPay() throws IOException {
         List<EventImage> images = imageService.findPayEventImages();
-        return ResponseEntity.ok().body(new CommonResponse<List<EventImage>>(images));
+        List<String> paths = new ArrayList<>();
+        for(EventImage image : images){
+            String path = image.getFilepath();
+            paths.add(path);
+        }
+        return ResponseEntity.ok().body(new CommonResponse<List<String>>(paths));
     }
 
     @PostMapping("/storeImage/post")
@@ -70,7 +82,12 @@ public class GalleryController {
     @GetMapping("/storeImage/{storeId}")
     public ResponseEntity<? extends BasicResponse> eventPay(@Valid @RequestParam Long storeId) throws IOException {
         List<StoreImageDto> images =  imageService.findStoreImage(storeId);
-        return ResponseEntity.ok().body(new CommonResponse<List<StoreImageDto>>(images));
+        List<String> paths = new ArrayList<>();
+        for(StoreImageDto image : images){
+            String path = image.getFilePath();
+            paths.add(path);
+        }
+        return ResponseEntity.ok().body(new CommonResponse<List<String>>(paths));
     }
 
 }

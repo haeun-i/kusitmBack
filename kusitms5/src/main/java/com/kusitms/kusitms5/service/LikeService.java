@@ -27,6 +27,8 @@ public class LikeService {
 
     @Transactional
     public void likes(long storeId, long userId){
+        Store store = storeRepository.findById(storeId);
+
         loveRepository.likes(storeId, userId);
     }
 

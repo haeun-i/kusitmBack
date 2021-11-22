@@ -66,6 +66,7 @@ public class User {
     @JsonBackReference
     private List<Modify> modifies = new ArrayList<>();
 
-
+    @Column(name = "user_click")
+    private int userClick;
 
 }

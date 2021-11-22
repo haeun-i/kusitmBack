@@ -73,8 +73,13 @@ public class StoreService {
         for(Store store : stores) {
             StoreDto response = new StoreDto(store);
 
-            Modify m = modifyRepository.getLastModify(store.getStoreId());
-            response.setUserName(m.getUser().getNickname());
+            if(modifyRepository.getLastModify(store.getStoreId()) == null){
+                response.setUserName("admin");
+            }
+            else{
+                Modify m = modifyRepository.getLastModify(store.getStoreId());
+                response.setUserName(m.getUser().getNickname());
+            }
 
             storeDtos.add(response);
         }
