@@ -1,5 +1,6 @@
 package com.kusitms.kusitms5.service;
 
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -13,6 +14,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 
+// initialize our firebase and integrated with the sdk
 @Service
 public class FCMInitializer {
 
@@ -22,11 +24,11 @@ public class FCMInitializer {
     Logger logger = LoggerFactory.getLogger(FCMInitializer.class);
 
     @PostConstruct
-    public void initialize() { // is being called on application start up
+    public void initialize() {
         try {
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())).build();
-            if(FirebaseApp.getApps().isEmpty()) {
+            if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
                 logger.info("Firebase application has been initialized");
             }
@@ -34,6 +36,5 @@ public class FCMInitializer {
             logger.error(e.getMessage());
         }
     }
-
 
 }

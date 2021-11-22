@@ -30,6 +30,10 @@ public class UserService {
         this.questionRepository = questionRepository;
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     @Transactional
     public User signup(UserDto userDto) {// 회원가입 : 이미 저장되어있는지 확인해봄
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {

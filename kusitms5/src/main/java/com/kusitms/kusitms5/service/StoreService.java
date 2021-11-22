@@ -97,4 +97,10 @@ public class StoreService {
         }
         return storeDtos;
     }
+
+    public void updateStore(StoreDto store) {
+        // 뭘 수정하지?
+        Store findStore = storeRepository.findOne(store.getStoreName()).get(0);
+        findStore.setStoreAddress(store.getStoreAddress());
+    }
 }

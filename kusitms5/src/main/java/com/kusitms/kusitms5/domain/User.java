@@ -43,6 +43,10 @@ public class User {
     @Column(name = "user_nickname", length = 50)
     private String nickname;
 
+
+    @OneToOne(mappedBy = "user")
+    private Device deviceToken;
+
     @ManyToMany
     @JoinTable(
             name = "user_authority",
