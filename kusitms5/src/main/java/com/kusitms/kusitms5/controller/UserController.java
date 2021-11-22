@@ -28,7 +28,6 @@ public class UserController {
     private final UserService userService;
     private final LikeService likeService;
 
-    //private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     public UserController(UserService userService, LikeService likeService) {
         this.userService = userService;
@@ -145,7 +144,6 @@ public class UserController {
 
         userService.delete(user.get());
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
 }

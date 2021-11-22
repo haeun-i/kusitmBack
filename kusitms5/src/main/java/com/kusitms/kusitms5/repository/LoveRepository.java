@@ -1,6 +1,7 @@
 package com.kusitms.kusitms5.repository;
 
 import com.kusitms.kusitms5.domain.Love;
+import com.kusitms.kusitms5.domain.Market;
 import com.kusitms.kusitms5.domain.Store;
 import com.kusitms.kusitms5.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public interface LoveRepository extends JpaRepository<Love, Long> {
     Love findLovesByStoreAndUser(Store store, User user);
+
 
     @Modifying
     @Query(value="INSERT INTO loves WHERE store_id = :storeId AND user_id =:userId)", nativeQuery = true)
