@@ -1,6 +1,7 @@
 package com.kusitms.kusitms5.controller;
 
 import com.kusitms.kusitms5.domain.User;
+import com.kusitms.kusitms5.dto.MarketDto;
 import com.kusitms.kusitms5.dto.UserDto;
 import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.response.BasicResponse;
@@ -86,6 +87,20 @@ public class UserController {
 
         likeService.unlikes(storeId, user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/aboutme")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
+    public ResponseEntity<? extends BasicResponse> aboutMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        UserDto userdto = new UserDto(user.get());
+
+        return ResponseEntity.ok(new CommonResponse<UserDto>(userdto));
     }
 
     @GetMapping("/store/like")

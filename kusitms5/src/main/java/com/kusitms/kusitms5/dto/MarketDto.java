@@ -15,10 +15,12 @@ import java.util.List;
 public class MarketDto {
     String marketName;
     int storeCnt;
+    String marketAddress;
 
     public MarketDto(Market market){
         marketName = market.getMarketName();
         storeCnt = market.getStoreCnt();
+        marketAddress = market.getMarketAddress();
     }
 
 }

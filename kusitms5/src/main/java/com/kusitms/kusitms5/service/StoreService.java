@@ -1,6 +1,7 @@
 package com.kusitms.kusitms5.service;
 
 import com.kusitms.kusitms5.domain.*;
+import com.kusitms.kusitms5.dto.MarketDto;
 import com.kusitms.kusitms5.dto.PopularList;
 import com.kusitms.kusitms5.dto.reviewDto;
 import com.kusitms.kusitms5.dto.StoreDto;
@@ -83,6 +84,16 @@ public class StoreService {
                 response.setUserName(m.getUser().getNickname());
             }
 
+            storeDtos.add(response);
+        }
+        return storeDtos;
+    }
+
+    public List<StoreDto> findAll() { // 상설장 목록 불러오기
+        List<Store> stores = storeRepository.findAll();
+        List<StoreDto> storeDtos = new ArrayList<>();
+        for(Store store : stores) {
+            StoreDto response = new StoreDto(store);
             storeDtos.add(response);
         }
         return storeDtos;

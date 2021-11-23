@@ -1,6 +1,7 @@
 package com.kusitms.kusitms5.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kusitms.kusitms5.domain.User;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -29,5 +30,11 @@ public class UserDto {
 
     @NotNull
     private String phone;
+
+    public UserDto(User user){
+        this.username = user.getUsername();
+        this.nickname = user.getNickname();
+        this.phone = user.getPhone();
+    }
 
 }

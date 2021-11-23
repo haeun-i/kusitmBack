@@ -1,10 +1,12 @@
 package com.kusitms.kusitms5.controller;
 
 import com.kusitms.kusitms5.domain.*;
+import com.kusitms.kusitms5.dto.MarketDto;
 import com.kusitms.kusitms5.dto.reviewDto;
 import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.response.BasicResponse;
 import com.kusitms.kusitms5.response.CommonResponse;
+import com.kusitms.kusitms5.service.MarketService;
 import com.kusitms.kusitms5.service.StoreService;
 import com.kusitms.kusitms5.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -23,14 +25,29 @@ import java.util.List;
 public class storeController {
     private final UserService userService;
     private final StoreService storeService;
+    private final MarketService marketService;
 
 
-    @GetMapping(value = "/store/getOne") // 특정 점포 정보 조회
+    @GetMapping(value = "/store/getOne") // 특정 점포정보 조회
     public ResponseEntity<? extends BasicResponse> storeList(String name) {
         List<StoreDto> stores = storeService.findOne(name);
-        storeService.addClick(name);
+            storeService.addClick(name);
+            return ResponseEntity.ok().body(new CommonResponse<List<StoreDto>>(stores));
+    }
+
+    @GetMapping(value = "/market/getOne") // 특정 시장정보 조회
+    public ResponseEntity<? extends BasicResponse> marketList(String name) {
+        List<MarketDto> markets = marketService.findOne(name);
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
+    }
+
+
+    @GetMapping(value = "/store") // 특정 점포정보 조회
+    public ResponseEntity<? extends BasicResponse> storeAll() {
+        List<StoreDto> stores = storeService.findAll();
         return ResponseEntity.ok().body(new CommonResponse<List<StoreDto>>(stores));
     }
+
 
     @PostMapping(value = "/store/writeReview") // 리뷰 작성
     @ApiImplicitParams({

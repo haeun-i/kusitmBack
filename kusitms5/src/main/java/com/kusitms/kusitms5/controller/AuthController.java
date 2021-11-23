@@ -6,6 +6,7 @@ import com.kusitms.kusitms5.dto.TokenDto;
 import com.kusitms.kusitms5.jwt.JwtFilter;
 import com.kusitms.kusitms5.jwt.TokenProvider;
 import com.kusitms.kusitms5.response.BasicResponse;
+//import com.kusitms.kusitms5.service.CertificationService;
 import com.kusitms.kusitms5.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api")
@@ -27,13 +29,16 @@ public class AuthController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+ //   private final CertificationService certificationService;
 
     public AuthController(TokenProvider tokenProvider,
                           AuthenticationManagerBuilder authenticationManagerBuilder,
-                          UserService userService) {
+                          UserService userService){
+                          //CertificationService certificationService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
+        //this.certificationService = certificationService;
     }
 
     // 로그인 : 토큰 생성
@@ -70,4 +75,11 @@ public class AuthController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @PostMapping("/sendSMS")
+//    public ResponseEntity<? extends BasicResponse> sendSMS(String phoneNumber, String rand) {
+//        certificationService.certifiedPhoneNumber(phoneNumber, rand);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
 }

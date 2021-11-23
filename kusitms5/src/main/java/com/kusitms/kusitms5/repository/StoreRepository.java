@@ -28,6 +28,12 @@ public class StoreRepository {
                 .getResultList();
     }
 
+    public List<Store> findAll(){ // 이름을 통한 점포 검색 결과 불러오기
+        return em.createQuery("select s from Store s",
+                Store.class)
+                .getResultList();
+    }
+
     public List<Store> findGift(){ // 온누리 상품권 사용점포 목록 불러오기
         return em.createQuery("select s from Store s where s.storeGiftcard = true",
                 Store.class)
