@@ -50,6 +50,7 @@ public class UserService {
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
+                .phone(userDto.getPhone())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
