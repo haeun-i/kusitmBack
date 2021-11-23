@@ -1,12 +1,14 @@
 package com.kusitms.kusitms5.service;
 
 import com.kusitms.kusitms5.domain.*;
+import com.kusitms.kusitms5.dto.PopularList;
 import com.kusitms.kusitms5.dto.reviewDto;
 import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.repository.ModifyRepository;
 import com.kusitms.kusitms5.repository.StoreRepository;
 import com.kusitms.kusitms5.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -86,6 +88,15 @@ public class StoreService {
         return storeDtos;
     }
 
+    @Transactional
+    public void addClick(String name){
+        List<Store> stores = storeRepository.findOne(name);
+        for(Store store : stores) {
+            long storeId = store.getStoreId();
+            storeRepository.addClick(storeId);
+        }
+    }
+
     public Store findOneById(Long storeId) {
         Store store = storeRepository.findById(storeId);
 
@@ -101,6 +112,20 @@ public class StoreService {
             storeDtos.add(response);
         }
         return storeDtos;
+    }
+
+    @Transactional
+    @Scheduled(cron="0 0 * * * *")
+    public void findPopular() {
+        List<Store> popularStores = storeRepository.findPopular();
+        List<StoreDto> storeDtos = new ArrayList<>();
+        for (Store store : popularStores) {
+            StoreDto response = new StoreDto(store);
+            storeDtos.add(response);
+        }
+
+        PopularList.popular = storeDtos;
+        storeRepository.deleteClick();
     }
 
     public void updateStore(StoreDto store) {
