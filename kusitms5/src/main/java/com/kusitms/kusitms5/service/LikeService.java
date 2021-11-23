@@ -3,6 +3,7 @@ package com.kusitms.kusitms5.service;
 import com.kusitms.kusitms5.domain.Love;
 import com.kusitms.kusitms5.domain.Market;
 import com.kusitms.kusitms5.domain.Store;
+import com.kusitms.kusitms5.domain.User;
 import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.dto.UserDto;
 import com.kusitms.kusitms5.repository.LoveRepository;
@@ -48,20 +49,20 @@ public class LikeService {
     }
 
     // 시장과 연결된 사람들 리스트
-    public List<UserDto> findLikeUser(String storeName) {
-        List<UserDto> userDtos = new ArrayList<>();
+    public List<User> findLikeUser(String storeName) {
+        List<User> users = new ArrayList<>();
         // 1. 이름에 맞는 store 찾기
         Store findStore = storeRepository.findOne(storeName).get(0);
         // 2. 해당 store과 관련된 연관 데이터 불러오기
         List<Love> findLoveList = findStore.getLoves();
         for (Love origin :
                 findLoveList) {
-            UserDto target = new UserDto();
+            User target = new User();
             BeanUtils.copyProperties(origin.getUser(), target);
-            userDtos.add(target);
+            users.add(target);
         }
 
-        return userDtos;
+        return users;
     }
 
 }

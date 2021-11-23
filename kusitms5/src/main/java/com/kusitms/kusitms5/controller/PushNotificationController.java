@@ -1,103 +1,127 @@
 package com.kusitms.kusitms5.controller;
 
+import com.kusitms.kusitms5.domain.Store;
+import com.kusitms.kusitms5.domain.User;
+import com.kusitms.kusitms5.dto.DeviceTokenRequest;
 import com.kusitms.kusitms5.dto.PushNotificationRequest;
 import com.kusitms.kusitms5.dto.PushNotificationResponse;
-import com.kusitms.kusitms5.dto.TokenDto;
-import com.kusitms.kusitms5.dto.UserDto;
-import com.kusitms.kusitms5.service.LikeService;
-import com.kusitms.kusitms5.service.PushNotificationService;
+import com.kusitms.kusitms5.dto.StoreDto;
+import com.kusitms.kusitms5.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+// send push notification to firebase
 @RestController
 public class PushNotificationController {
 
     private PushNotificationService pushNotificationService;
-    private LikeService likeService;
 
-    public PushNotificationController(PushNotificationService pushNotificationService, LikeService likeService) {
+    private final StoreService storeService;
+    private final LikeService likeService;
+    private final UserService userService;
+    private final DeviceService deviceService;
+
+    public PushNotificationController(PushNotificationService pushNotificationService, StoreService storeService, LikeService likeService, UserService userService, DeviceService deviceService) {
         this.pushNotificationService = pushNotificationService;
+        this.storeService = storeService;
         this.likeService = likeService;
+        this.userService = userService;
+        this.deviceService = deviceService;
     }
 
-    // 특정 토픽에 대한 알림 반환
-    /* curl -d '{"title":"Hello", "message":"The message...", "topic":"contactTopic"}' -H "Content-Type: application/json" -X POST http://localhost:8080/notification/topic */
     @PostMapping("/notification/topic")
     public ResponseEntity sendNotification(@RequestBody PushNotificationRequest request) {
         pushNotificationService.sendPushNotificationWithoutData(request);
         return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
     }
 
-    // 해당 토큰을 가진 디바이스만 알림 반환
-    /* 알림을 db에서 가져와서 저장*/
-    /* curl -d '{"title":"Hey you!", "message":"Watch out!", "token":"cct00ebz8eg:APA91bFcTkFE_0Qafj6nWv5yHxqCLTyxAaqi4QzwsFNLP5M9G78X8Z5UMZTW004q1PUux63Ut-1WMGVToMNTdB3ZfO8lCZlc4lGpxm7LBdWfkhaUxdbpQ5xIO5cAb-w9H2dBLNHT7i-U", "topic": ""}' -H "Content-Type: application/json" -X POST http://localhost:8080/notification/token */
     @PostMapping("/notification/token")
     public ResponseEntity sendTokenNotification(@RequestBody PushNotificationRequest request) {
         pushNotificationService.sendPushNotificationToToken(request);
         return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
     }
 
-    //  Send a message to a specific topic with additional payload data.
-    /* curl -d '{"title":"Hello", "message":"Data message", "topic":"contactTopic"}' -H "Content-Type: application/json" -X POST http://localhost:8080/notification/data */
     @PostMapping("/notification/data")
     public ResponseEntity sendDataNotification(@RequestBody PushNotificationRequest request) {
         pushNotificationService.sendPushNotification(request);
         return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
     }
 
-    // default 값을 반환해준다.
-    /* curl -H "Content-Type: application/json" -X GET http://localhost:8080/notification */
-    @GetMapping("/notification")
-    public ResponseEntity sendSampleNotification() {
-        pushNotificationService.sendSamplePushNotification();
+    @PostMapping("/notification/data/customdatawithtopic")
+    public ResponseEntity sendDataNotificationCustom(@RequestBody PushNotificationRequest request) {
+        pushNotificationService.sendPushNotificationCustomDataWithTopic(request);
+        return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
+    }
+    @PostMapping("/notification/data/customdatawithtopicjson")
+    public ResponseEntity sendDataNotificationCustomWithSpecificJson(@RequestBody PushNotificationRequest request) {
+        pushNotificationService.sendPushNotificationCustomDataWithTopicWithSpecificJson(request);
         return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
     }
 
-    // 가게 내용 수정됨 -> 그 가게를 찜한 사람에게 수정 내용을 알림
+    /* refresh토큰이 생성될 때마다 무조건 DB에 update가 되도록 하는 요청
+    *  -> 디바이스가 생성 될 때 토큰이 만들어짐, 그때 사용자id와 토큰의 정보를 요청해야함, 그러면 업데이트 시킴*/
+    @PostMapping("/notification/tokenUpdate")
+    public String updateToken(@RequestBody DeviceTokenRequest request) {
+
+        // 1. username으로 바로 userid 찾기
+        User user = userService.findByUsername(request.getUsername()).get();
+        // 2. device테이블에서 userid에 해당하는 token을 업데이트
+        String newJwt = deviceService.UpdateDeviceToken(user.getUserId(), user.getDeviceToken().getToken());
+
+        return newJwt;
+    }
+
+
     /*
-    *  1. 가게 이름 post요청
-    *  2. 가게 이름으로 id찾기 (생략가능)
-    *  3. 찾은 가게와 연결된 좋아요 한 사용자 찾기
-    *  4. 좋아요 한 사용자 토큰 알아보기
-    *  5. 그 토큰을 가진 사람들에게 수정 내용 push */
-    // 알림 내용 : 수정되었습니다..?
+    * 1. 주인이 가게 내용을 수정한다.
+    * 2. 수정한 내용을 request에 저장하고 요청한다.(POST)
+    * 3. 수정한 내용을 DB에 update한다.
+    * 4. 수정한 내용을 연결된 디바이스에 푸시한다.
+    *       1) store과 연결된 user을 찾고 리스트로 저장한다.
+    *       2) user와 연결된 디바이스의 토큰을 찾는다.
+    *       3) 해당 토큰으로 푸시알림을 보낸다.
+    */
 
-    // 해당 토큰을 가진 디바이스만 알림 반환
-    /* 알림을 db에서 가져와서 저장*/
-    /* curl -d '{"title":"Hey you!", "message":"Watch out!", "token":"cct00ebz8eg:APA91bFcTkFE_0Qafj6nWv5yHxqCLTyxAaqi4QzwsFNLP5M9G78X8Z5UMZTW004q1PUux63Ut-1WMGVToMNTdB3ZfO8lCZlc4lGpxm7LBdWfkhaUxdbpQ5xIO5cAb-w9H2dBLNHT7i-U", "topic": ""}' -H "Content-Type: application/json" -X POST http://localhost:8080/notification/token */
-    @PostMapping("/notification/change-store")
-    public ResponseEntity sendLikesNotification() {
+    // 1. 주인이 가게 내용을 수정한다.
+    @PostMapping("/notification/updateStore")
+    public ResponseEntity sendUpdateNotification(@RequestBody StoreDto storeDto) { // 2.수정한 내용을 request에 저장하고 요청한다.(POST)
 
-        PushNotificationRequest request = new PushNotificationRequest(); // 뭐가 바뀌었는지
+        // 3. 수정한 내용을 DB에 update한다.
+        storeService.updateStore(storeDto); // get(0)부분 수정필요
+        String updateMessage = storeDto.getStoreName() + "을 확인해보세요!";
+        System.out.println("message : " + updateMessage);
 
-        // 점포이름
-        String storeName = "점포이름";
-        List<UserDto> userDtos = likeService.findLikeUser(storeName);
-        // 유저의 토큰을 가져와야함. 토큰 -> 파이어베이스의 디바이스 토큰
-        for (UserDto target :
-                userDtos) {
+        // 4-1) store과 연결된 user을 찾고 리스트로 저장한다.
+        List<User> userList = likeService.findLikeUser(storeDto.getStoreName()); // get(0)부분 수정
+        System.out.println("좋아요한 user 수 : " + userList.size());
 
-           /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            //String jwt = authentication*/
-          //  TokenDto tokenDto = new TokenDto();
+        for (User user :
+                userList) {
+            if (user.getDeviceToken().getToken() != null) {
+                PushNotificationRequest request = new PushNotificationRequest();
+                request.setTitle("알림");
+                request.setMessage(updateMessage);
+                // 4-2) user와 연결된 디바이스의 토큰을 찾는다.
+                request.setToken(user.getDeviceToken().getToken());
+                //request.setTopic("");
 
-            request.setTitle("title");
-            request.setMessage("message");
-          //  request.setToken(tokenDto.getToken());
-            pushNotificationService.sendPushNotificationToToken(request);
+                // 4-3) 해당 토큰으로 푸시알림을 보낸다.
+                pushNotificationService.sendPushNotificationToToken(request);
+            }
         }
 
         return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
     }
 
+
+    public void sendAutomaticNotification(){
+        PushNotificationRequest request = new PushNotificationRequest();
+        request.setTopic("global");
+        pushNotificationService.sendPushNotificationCustomDataWithTopicWithSpecificJson(request);
+    }
 }

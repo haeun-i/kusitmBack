@@ -116,15 +116,22 @@ public class StoreService {
 
     @Transactional
     @Scheduled(cron="0 0 * * * *")
-    public void findPopular(){
+    public void findPopular() {
         List<Store> popularStores = storeRepository.findPopular();
         List<StoreDto> storeDtos = new ArrayList<>();
-        for(Store store : popularStores) {
+        for (Store store : popularStores) {
             StoreDto response = new StoreDto(store);
             storeDtos.add(response);
         }
 
         PopularList.popular = storeDtos;
         storeRepository.deleteClick();
+    }
+
+    public void updateStore(StoreDto store) {
+        // 뭘 수정하지?
+        Store findStore = storeRepository.findOne(store.getStoreName()).get(0);
+        findStore.setStoreAddress(store.getStoreAddress());
+
     }
 }

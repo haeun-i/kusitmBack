@@ -39,7 +39,7 @@ public class UserController {
         response.sendRedirect("/api/user");
     }
 
-    // 회원가입 Controller (username, password, nickname)
+    // 회원가입 Controller (username, password, nickname, phone)
     @PostMapping("/signup")
     public ResponseEntity<User> signup(
             @Valid @RequestBody UserDto userDto
