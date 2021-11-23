@@ -73,7 +73,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	//sendMessage
+	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	compileOnly group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	annotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
 }
 
 test {
