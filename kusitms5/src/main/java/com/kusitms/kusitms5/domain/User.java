@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -65,4 +66,21 @@ public class User {
     @Column(name = "user_click")
     private int userClick;
 
+    public User(String nickname, String email){
+        this.username = email;
+        this.nickname = nickname;
+
+        Authority authority = Authority.builder()
+                .authorityName("ROLE_USER")
+                .build();
+
+        authorities = Collections.singleton(authority);
+    }
+
+    public User update(String name, String email) {
+        this.nickname = name;
+        this.username = email;
+
+        return this;
+    }
 }

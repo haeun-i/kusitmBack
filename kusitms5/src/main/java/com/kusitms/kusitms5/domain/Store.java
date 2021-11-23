@@ -34,6 +34,9 @@ public class Store {
     @Column(name = "store_giftcard", nullable = false)
     private boolean storeGiftcard;
 
+    @Column(name = "store_click", nullable = false)
+    private int storeClick;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "market_id")

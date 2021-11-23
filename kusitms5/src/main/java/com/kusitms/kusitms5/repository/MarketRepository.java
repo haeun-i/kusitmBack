@@ -13,6 +13,12 @@ import java.util.List;
 public class MarketRepository {
     private final EntityManager em;
 
+    public List<Market> findAll(){ // 상설장 목록 불러오기
+        return em.createQuery("select m from Market m",
+                Market.class)
+                .getResultList();
+    }
+
     public List<Market> findPermanent(){ // 상설장 목록 불러오기
         return em.createQuery("select m from Market m where m.marketType = 0",
                 Market.class)

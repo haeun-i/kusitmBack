@@ -15,6 +15,17 @@ public class MarketService {
 
     private final MarketRepository marketRepository;
 
+    public List<MarketDto> findAll() { // 상설장 목록 불러오기
+        List<Market> markets = marketRepository.findAll();
+        List<MarketDto> marketDtos = new ArrayList<>();
+        for(Market market : markets) {
+            MarketDto response = new MarketDto(market);
+            marketDtos.add(response);
+        }
+        return marketDtos;
+    }
+
+
     public List<MarketDto> findPermanent() { // 상설장 목록 불러오기
         List<Market> markets = marketRepository.findPermanent();
         List<MarketDto> marketDtos = new ArrayList<>();

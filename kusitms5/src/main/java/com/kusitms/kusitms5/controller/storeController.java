@@ -28,6 +28,7 @@ public class storeController {
     @GetMapping(value = "/store/getOne") // 특정 점포 정보 조회
     public ResponseEntity<? extends BasicResponse> storeList(String name) {
         List<StoreDto> stores = storeService.findOne(name);
+        storeService.addClick(name);
         return ResponseEntity.ok().body(new CommonResponse<List<StoreDto>>(stores));
     }
 
