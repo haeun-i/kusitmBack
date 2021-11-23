@@ -16,6 +16,13 @@ public class Device {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "device_token")
+    private String token;
+
+    @Column(name = "on_alarm")
+    private boolean onAlarm;
+
+
     public Device() {
     }
 
@@ -33,8 +40,7 @@ public class Device {
         this.user = user;
     }
 
-    @Column(name = "device_token")
-    private String token;
+
 
     public Long getId() {
         return id;
@@ -53,4 +59,13 @@ public class Device {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public boolean isOnAlarm() {
+        return onAlarm;
+    }
+
+    public void setOnAlarm(boolean onAlarm) {
+        this.onAlarm = onAlarm;
+    }
+
 }

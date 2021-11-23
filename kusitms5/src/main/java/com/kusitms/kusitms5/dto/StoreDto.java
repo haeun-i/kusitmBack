@@ -37,4 +37,6 @@ public class StoreDto {
         storeCategory = store.getStoreCategory();
         marketName = store.getMarket().getMarketName();
     }
+
+
 }
