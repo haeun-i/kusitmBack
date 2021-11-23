@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface DeviceRepository extends JpaRepository<Device, Long> {
     Device findByUser(Long userId);
+    Device findByToken(String token);
+    void delete(Device device);
 }

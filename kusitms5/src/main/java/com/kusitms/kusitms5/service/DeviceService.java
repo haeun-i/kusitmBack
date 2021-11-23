@@ -19,8 +19,10 @@ public class DeviceService {
     @Transactional
     public String UpdateDeviceToken(Long userId, String token) {
         Device device = deviceRepository.findByUser(userId);
-        device.setToken(token);// update
+        device.setToken(token);// update -> default : true
 
         return device.getToken();
     }
+
+
 }

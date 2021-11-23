@@ -2,6 +2,7 @@ package com.kusitms.kusitms5.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kusitms.kusitms5.dto.StoreDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,4 +53,12 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<StoreImage> images = new ArrayList<>();
+
+    public void UpdateStore(StoreDto storeDto) {
+        storeAddress = storeDto.getStoreAddress();
+        storeCategory = storeDto.getStoreCategory();
+        storeName = storeDto.getStoreName();
+        storePhone = storeDto.getStorePhone();
+        storeGiftcard = storeDto.isStoreGiftcard();
+    }
 }
