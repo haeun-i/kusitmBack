@@ -3,6 +3,7 @@ package com.kusitms.kusitms5.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kusitms.kusitms5.dto.StoreDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,8 +36,18 @@ public class Store {
     @Column(name = "store_giftcard", nullable = false)
     private boolean storeGiftcard;
 
+    @Column(name = "store_score", nullable = false)
+    private double storeScore;
+
     @Column(name = "store_click", nullable = false)
     private int storeClick;
+
+    @Column(name = "store_link", nullable = false)
+    private String storeLink;
+
+    @Column(name = "store_time", nullable = false)
+    private String storeTime;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -60,5 +71,8 @@ public class Store {
         storeName = storeDto.getStoreName();
         storePhone = storeDto.getStorePhone();
         storeGiftcard = storeDto.isStoreGiftcard();
+        storeLink = storeDto.getStoreLink();
+        storeTime = storeDto.getStoreTime();
+        storeScore = storeDto.getStoreScore();
     }
 }

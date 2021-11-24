@@ -94,4 +94,11 @@ public class StoreRepository {
         em.createQuery("UPDATE Store s SET s.storeClick = 0")
                 .executeUpdate();
     }
+
+    public void resetScore(double score, Long store){
+        em.createQuery("UPDATE Store s SET s.storeScore = :score Where s.storeId = :store")
+                .setParameter("score", score)
+                .setParameter("store", store)
+                .executeUpdate();
+    }
 }

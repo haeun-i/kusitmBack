@@ -24,7 +24,7 @@ public class Review {
     private String reviewMemo;
 
     @Column(name = "review_score")
-    private int reviewScore;
+    private double reviewScore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -40,7 +40,7 @@ public class Review {
     @JsonBackReference
     private List<Report> reports = new ArrayList<>();
 
-    public static Review createReview(User user, Store store, String memo, int score){
+    public static Review createReview(User user, Store store, String memo, double score){
 
         Review review = new Review();
         review.setUser(user);

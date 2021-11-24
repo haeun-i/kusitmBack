@@ -14,7 +14,7 @@ public class reviewDto {
 
     String reviewUserName;
     String reviewMemo;
-    int reviewScore;
+    double reviewScore;
 
     public reviewDto(Review review){
         reviewUserName = review.getUser().getNickname();

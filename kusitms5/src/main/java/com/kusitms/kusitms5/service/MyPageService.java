@@ -96,6 +96,7 @@ public class MyPageService {
         Store store = new Store();
         Market market = marketRepository.findOne(storeDto.getMarketName()).stream().findFirst().get();
 
+
         market.setStoreCnt((market.getStoreCnt()+1)); // cnt 증가
         // 1. market_info에서 해당이름의 id찾기 -> store_info에 등록 + (상설, 비상설)
         store.setMarket(market);
@@ -108,6 +109,10 @@ public class MyPageService {
         // 4. 온누리 가능
         store.setStoreGiftcard(storeDto.isStoreGiftcard());
 
+        store.setStoreCategory(storeDto.getStoreCategory());
+        store.setStorePhone(storeDto.getStorePhone());
+        store.setStoreTime(storeDto.getStoreTime());
+        store.setStoreLink(storeDto.getStoreLink());
         storeRepository.saveStore(store);
 
         return storeDto;

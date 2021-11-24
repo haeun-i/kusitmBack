@@ -25,14 +25,15 @@ public class StoreService {
 
 
     @Transactional
-    public Review addReview(String userName, Long storeId, String memo, int score) {
+    public Review addReview(String userName, Long storeId, String memo, double score) {
 
         User user = userRepository.findOneWithAuthoritiesByUsername(userName).get();
         Store store = storeRepository.findById(storeId);
 
         Review review = Review.createReview(user, store, memo, score);
         storeRepository.saveReview(review);
-
+        double newScore = this.resetStoreScore(storeId);
+        storeRepository.resetScore(newScore, storeId);
         return review;
     }
 
@@ -70,6 +71,18 @@ public class StoreService {
         return reviewDtos;
     }
 
+    public double resetStoreScore(Long storeId){
+        Store store = storeRepository.findById(storeId);
+        List<Review> reviews = storeRepository.findReviewList(store);
+        double score = 0;
+        int reviewCnt = 0;
+        for(Review review : reviews){
+            reviewCnt = reviewCnt + 1;
+            score = score + review.getReviewScore();
+        }
+        return score/reviewCnt;
+    }
+
     public Review findReviewbyMemo(String memo) {
         return storeRepository.fineReview(memo).get(0);
     }
@@ -102,6 +115,15 @@ public class StoreService {
         List<StoreDto> storeDtos = new ArrayList<>();
         for(Store store : stores) {
             StoreDto response = new StoreDto(store);
+
+            if(modifyRepository.getLastModify(store.getStoreId()) == null){
+                response.setUserName("admin");
+            }
+            else{
+                Modify m = modifyRepository.getLastModify(store.getStoreId());
+                response.setUserName(m.getUser().getNickname());
+            }
+
             storeDtos.add(response);
         }
         return storeDtos;
@@ -128,6 +150,15 @@ public class StoreService {
         List<StoreDto> storeDtos = new ArrayList<>();
         for(Store store : stores) {
             StoreDto response = new StoreDto(store);
+
+            if(modifyRepository.getLastModify(store.getStoreId()) == null){
+                response.setUserName("admin");
+            }
+            else{
+                Modify m = modifyRepository.getLastModify(store.getStoreId());
+                response.setUserName(m.getUser().getNickname());
+            }
+
             storeDtos.add(response);
         }
         return storeDtos;

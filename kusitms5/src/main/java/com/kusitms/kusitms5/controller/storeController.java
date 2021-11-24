@@ -55,7 +55,7 @@ public class storeController {
     })
     public ResponseEntity<? extends BasicResponse> writeReview(@RequestParam("storeName") String storeName,
                                                                @RequestParam("memo") String memo,
-                                                               @RequestParam("score") int score) {
+                                                               @RequestParam("score") double score) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
