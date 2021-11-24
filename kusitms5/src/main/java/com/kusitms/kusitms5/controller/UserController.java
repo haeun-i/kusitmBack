@@ -1,12 +1,14 @@
 package com.kusitms.kusitms5.controller;
 
+import com.kusitms.kusitms5.domain.Store;
 import com.kusitms.kusitms5.domain.User;
-import com.kusitms.kusitms5.dto.MarketDto;
 import com.kusitms.kusitms5.dto.UserDto;
 import com.kusitms.kusitms5.dto.StoreDto;
+import com.kusitms.kusitms5.repository.StoreRepository;
 import com.kusitms.kusitms5.response.BasicResponse;
 import com.kusitms.kusitms5.response.CommonResponse;
 import com.kusitms.kusitms5.service.LikeService;
+import com.kusitms.kusitms5.service.StoreService;
 import com.kusitms.kusitms5.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,11 +30,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final LikeService likeService;
+    private final StoreRepository storeRepository;
 
-
-    public UserController(UserService userService, LikeService likeService) {
+    public UserController(UserService userService, LikeService likeService, StoreRepository storeRepository) {
         this.userService = userService;
         this.likeService = likeService;
+        this.storeRepository = storeRepository;
     }
 
     @PostMapping("/test-redirect")
@@ -66,12 +69,14 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
     })
-    public ResponseEntity<? extends BasicResponse> likes(@RequestParam("storeId") Long storeId){
+    public ResponseEntity<? extends BasicResponse> likes(@RequestParam("storeName") String storeName){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String id = authentication.getName();
         Optional<User> user = userService.getUserWithAuthorities(id);
 
-        likeService.likes(storeId, user.get().getUserId());
+        Store store = storeRepository.findOne(storeName).get(0);
+
+        likeService.likes(store.getStoreId(), user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -80,12 +85,15 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
     })
-    public ResponseEntity<? extends BasicResponse> unlikes(@RequestParam("storeId") Long storeId){
+    public ResponseEntity<? extends BasicResponse> unlikes(@RequestParam("storeName") String storeName){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String id = authentication.getName();
         Optional<User> user = userService.getUserWithAuthorities(id);
 
-        likeService.unlikes(storeId, user.get().getUserId());
+
+        Store store = storeRepository.findOne(storeName).get(0);
+
+        likeService.unlikes(store.getStoreId(), user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

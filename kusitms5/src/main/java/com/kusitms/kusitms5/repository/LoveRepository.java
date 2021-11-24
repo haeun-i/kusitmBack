@@ -16,7 +16,7 @@ public interface LoveRepository extends JpaRepository<Love, Long> {
 
 
     @Modifying
-    @Query(value="INSERT INTO loves WHERE store_id = :storeId AND user_id =:userId)", nativeQuery = true)
+    @Query(value="INSERT INTO kusitms5.loves (store_id, user_id) VALUES (:storeId, :userId)", nativeQuery = true)
     void likes(@Param("storeId")long storeId, @Param("userId")long userId);
 
     @Modifying
