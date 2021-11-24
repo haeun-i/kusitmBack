@@ -17,14 +17,19 @@ public class StoreRepository {
     public Store findById(Long id){     // 레시피 검색
         return em.find(Store.class, id);
     }
-    public Review findReview(Long id){     // 레시피 검색
-        return em.find(Review.class, id);
-    }
+
 
     public List<Store> findOne(String name){ // 이름을 통한 점포 검색 결과 불러오기
         return em.createQuery("select s from Store s where s.storeName = :name",
                 Store.class)
                 .setParameter("name", name)
+                .getResultList();
+    }
+
+    public List<Review> fineReview(String memo){ // 내용을 통한 리뷰 불러오기
+        return em.createQuery("select r from Review r where r.reviewMemo = :memo",
+                Review.class)
+                .setParameter("memo", memo)
                 .getResultList();
     }
 
@@ -89,6 +94,4 @@ public class StoreRepository {
         em.createQuery("UPDATE Store s SET s.storeClick = 0")
                 .executeUpdate();
     }
-
-
 }

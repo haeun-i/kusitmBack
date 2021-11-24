@@ -68,10 +68,10 @@ public class GalleryController {
     }
 
     @PostMapping("/storeImage/post")
-    public ResponseEntity<? extends BasicResponse> storeUpload(MultipartFile file, Long storeId) throws IOException {
+    public ResponseEntity<? extends BasicResponse> storeUpload(MultipartFile file, String storeName) throws IOException {
         String imgPath = s3Service.upload(file);
         String imgName = file.getOriginalFilename();
-        Store store = storeService.findOneById(storeId);
+        Store store = storeService.findRealOne(storeName);
 
         StoreImageDto storeImageDto = new StoreImageDto(imgName, imgPath, store);
 
@@ -79,9 +79,10 @@ public class GalleryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/storeImage/{storeId}")
-    public ResponseEntity<? extends BasicResponse> eventPay(@Valid @RequestParam Long storeId) throws IOException {
-        List<StoreImageDto> images =  imageService.findStoreImage(storeId);
+    @GetMapping("/storeImage/store")
+    public ResponseEntity<? extends BasicResponse> eventPay(String storeName) throws IOException {
+        Store store = storeService.findRealOne(storeName);
+        List<StoreImageDto> images =  imageService.findStoreImage(store.getStoreId());
         List<String> paths = new ArrayList<>();
         for(StoreImageDto image : images){
             String path = image.getFilePath();

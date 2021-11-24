@@ -53,13 +53,15 @@ public class storeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
     })
-    public ResponseEntity<? extends BasicResponse> writeReview(@RequestParam("storeId") Long storeId,
+    public ResponseEntity<? extends BasicResponse> writeReview(@RequestParam("storeName") String storeName,
                                                                @RequestParam("memo") String memo,
                                                                @RequestParam("score") int score) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
-        Review review = storeService.addReview(userName, storeId, memo, score);
+        Store store = storeService.findRealOne(storeName);
+
+        Review review = storeService.addReview(userName, store.getStoreId(), memo, score);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -67,12 +69,13 @@ public class storeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
     })
-    public ResponseEntity<? extends BasicResponse> writeReviewReport(@RequestParam("reviewId") Long reviewId,
+    public ResponseEntity<? extends BasicResponse> writeReviewReport(@RequestParam("reviewMemo") String reviewMemo,
                                                                @RequestParam("memo") String memo) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
-        Report report = storeService.addReport(userName, reviewId, memo);
+        Review review = storeService.findReviewbyMemo(reviewMemo);
+        Report report = storeService.addReport(userName, review.getReviewMemo(), memo);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -80,18 +83,20 @@ public class storeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
     })
-    public ResponseEntity<? extends BasicResponse> writeStoreModify(@RequestParam("storeId") Long storeId,
+    public ResponseEntity<? extends BasicResponse> writeStoreModify(@RequestParam("storeName") String storeName,
                                                                      @RequestParam("memo") String memo) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
-        Modify modify = storeService.addModify(userName, storeId, memo);
+        Store store = storeService.findRealOne(storeName);
+        Modify modify = storeService.addModify(userName, store.getStoreId(), memo);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/store/getReview") // 가게별 리뷰 확인
-    public ResponseEntity<? extends BasicResponse> getReview(@RequestParam("storeId") Long storeId) {
-        List<reviewDto> reviews = storeService.findReview(storeId);
+    public ResponseEntity<? extends BasicResponse> getReview(@RequestParam("storeName") String storeName) {
+        Store store = storeService.findRealOne(storeName);
+        List<reviewDto> reviews = storeService.findReview(store.getStoreId());
         return ResponseEntity.ok().body(new CommonResponse<List<reviewDto>>(reviews));
     }
 

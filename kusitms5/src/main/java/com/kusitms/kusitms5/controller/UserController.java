@@ -30,12 +30,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final LikeService likeService;
-    private final StoreRepository storeRepository;
+    private final StoreService storeService;
 
-    public UserController(UserService userService, LikeService likeService, StoreRepository storeRepository) {
+    public UserController(UserService userService, LikeService likeService, StoreService storeService) {
         this.userService = userService;
         this.likeService = likeService;
-        this.storeRepository = storeRepository;
+        this.storeService = storeService;
     }
 
     @PostMapping("/test-redirect")
@@ -74,7 +74,7 @@ public class UserController {
         String id = authentication.getName();
         Optional<User> user = userService.getUserWithAuthorities(id);
 
-        Store store = storeRepository.findOne(storeName).get(0);
+        Store store = storeService.findRealOne(storeName);
 
         likeService.likes(store.getStoreId(), user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -90,8 +90,7 @@ public class UserController {
         String id = authentication.getName();
         Optional<User> user = userService.getUserWithAuthorities(id);
 
-
-        Store store = storeRepository.findOne(storeName).get(0);
+        Store store = storeService.findRealOne(storeName);
 
         likeService.unlikes(store.getStoreId(), user.get().getUserId());
         return new ResponseEntity<>(HttpStatus.OK);

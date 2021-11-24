@@ -49,11 +49,11 @@ public class StoreService {
     }
 
     @Transactional
-    public Report addReport(String userName, Long reviewId, String memo) {
+    public Report addReport(String userName, String reviewMemo, String memo) {
         User user = userRepository.findOneWithAuthoritiesByUsername(userName).get();
-        Review review = storeRepository.findReview(reviewId);
+        List<Review> review = storeRepository.fineReview(reviewMemo);
 
-        Report report = Report.createReport(review, memo);
+        Report report = Report.createReport(review.get(0), memo);
         storeRepository.saveReport(report);
 
         return report;
@@ -68,6 +68,10 @@ public class StoreService {
             reviewDtos.add(response);
         }
         return reviewDtos;
+    }
+
+    public Review findReviewbyMemo(String memo) {
+        return storeRepository.fineReview(memo).get(0);
     }
 
     public List<StoreDto> findOne(String name) {
@@ -87,6 +91,10 @@ public class StoreService {
             storeDtos.add(response);
         }
         return storeDtos;
+    }
+
+    public Store findRealOne(String name) {
+        return storeRepository.findOne(name).get(0);
     }
 
     public List<StoreDto> findAll() { // 상설장 목록 불러오기
