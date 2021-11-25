@@ -69,7 +69,7 @@ public class QuoteService {
                 String price = obj.getString("A_PRICE");
 
                 // P_YEAR_MONTH : String 업데이트 날짜
-                String date = obj.getString("P_YEAR_MONTH");
+                String unit = obj.getString("A_UNIT");
 
                 // M_NAME : String 시장이름
                 String m_name = obj.getString("M_NAME");
@@ -79,7 +79,7 @@ public class QuoteService {
                 String a_name = obj.getString("A_NAME");
                 System.out.println(a_name);
 
-                PriceModel priceModel = new PriceModel(price, date, m_name, a_name);
+                PriceModel priceModel = new PriceModel(price, unit, m_name, a_name);
                 priceModelList.add(priceModel);
             }
 
@@ -129,7 +129,7 @@ public class QuoteService {
             String price = obj.getString("A_PRICE");
 
             // P_YEAR_MONTH : String 업데이트 날짜
-            String date = obj.getString("P_YEAR_MONTH");
+            String date = obj.getString("A_UNIT");
 
             // M_NAME : String 시장이름
             String m_name = obj.getString("M_NAME");
