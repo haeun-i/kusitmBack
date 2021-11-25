@@ -42,10 +42,10 @@ public class filterController {
         return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
-    @GetMapping(value = "/") // 모든 비상설시장 목록 조회
-    public String showmain() {
-        return "index";
-    }
+//    @GetMapping(value = "/") // 모든 비상설시장 목록 조회
+//    public String showmain() {
+//        return "index";
+//    }
 
 
     @GetMapping(value = "/market/filter/gift") // 온누리상품권 사용 가능 점포 목록 조회
