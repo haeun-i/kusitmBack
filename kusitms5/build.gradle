@@ -78,7 +78,11 @@ dependencies {
 	annotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 
 	//JsonParser
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	//implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+	// parsing
+	implementation 'org.json:json:20190722'
+
 
 }
 
