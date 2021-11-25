@@ -1,6 +1,4 @@
 package com.kusitms.kusitms5.repository;
-
-import com.kusitms.kusitms5.domain.StoreImage;
 import com.kusitms.kusitms5.domain.User;
 
 import org.springframework.data.jpa.repository.EntityGraph;

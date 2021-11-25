@@ -39,15 +39,11 @@ public class Store {
     @Column(name = "store_score", nullable = false)
     private double storeScore;
 
-    @Column(name = "store_click", nullable = false)
-    private int storeClick;
-
     @Column(name = "store_link", nullable = false)
     private String storeLink;
 
     @Column(name = "store_time", nullable = false)
     private String storeTime;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -60,10 +56,6 @@ public class Store {
 
     @OneToMany(mappedBy = "store")
     private List<Love> loves = new ArrayList<>();
-
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<StoreImage> images = new ArrayList<>();
 
     public void UpdateStore(StoreDto storeDto) {
         storeAddress = storeDto.getStoreAddress();

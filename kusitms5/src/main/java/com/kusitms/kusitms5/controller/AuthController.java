@@ -7,7 +7,7 @@ import com.kusitms.kusitms5.jwt.JwtFilter;
 import com.kusitms.kusitms5.jwt.TokenProvider;
 import com.kusitms.kusitms5.response.BasicResponse;
 //import com.kusitms.kusitms5.service.CertificationService;
-import com.kusitms.kusitms5.service.CertificationService;
+import com.kusitms.kusitms5.service.OAuthService;
 import com.kusitms.kusitms5.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,8 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api")
@@ -30,14 +28,22 @@ public class AuthController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final OAuthService oAuthService;
+
+    private static final String ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth";
+    private static final String CLIENT_ID = "923304318632-2p8oee89ghpcg9ah7lk8d1ubgmfrbuvf.apps.googleusercontent.com";
+    private static final String REDIRECT_URI = "http://localhost:8080/login/oauth2/code/google";
+    private static final String RESPONSE_TYPE = "code";
+    private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
 
 
     public AuthController(TokenProvider tokenProvider,
                           AuthenticationManagerBuilder authenticationManagerBuilder,
-                          UserService userService) {
+                          UserService userService, OAuthService oAuthService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
+        this.oAuthService = oAuthService;
     }
 
     // 로그인 : 토큰 생성
@@ -74,7 +80,5 @@ public class AuthController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 
 }

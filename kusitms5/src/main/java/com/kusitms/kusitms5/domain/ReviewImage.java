@@ -11,8 +11,9 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "store_image")
-public class StoreImage {
+@Table(name = "review_image")
+public class ReviewImage {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long imageId;
@@ -25,14 +26,14 @@ public class StoreImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     @Builder
-    public StoreImage(Long id, String title, String filePath, Store store) {
+    public ReviewImage(Long id, String title, String filePath, Review review) {
         this.imageId = id;
         this.title = title;
         this.filepath = filePath;
-        this.store = store;
+        this.review = review;
     }
 }

@@ -5,6 +5,7 @@ import com.kusitms.kusitms5.dto.MarketDto;
 import com.kusitms.kusitms5.dto.PopularList;
 import com.kusitms.kusitms5.dto.reviewDto;
 import com.kusitms.kusitms5.dto.StoreDto;
+import com.kusitms.kusitms5.repository.MarketRepository;
 import com.kusitms.kusitms5.repository.ModifyRepository;
 import com.kusitms.kusitms5.repository.StoreRepository;
 import com.kusitms.kusitms5.repository.UserRepository;
@@ -22,6 +23,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final ModifyRepository modifyRepository;
+    private final MarketRepository marketRepository;
 
 
     @Transactional
@@ -131,10 +133,10 @@ public class StoreService {
 
     @Transactional
     public void addClick(String name){
-        List<Store> stores = storeRepository.findOne(name);
-        for(Store store : stores) {
-            long storeId = store.getStoreId();
-            storeRepository.addClick(storeId);
+        List<Market> markets = marketRepository.findOne(name);
+        for(Market market : markets) {
+            long marketId = market.getMarketId();
+            marketRepository.addClick(marketId);
         }
     }
 
@@ -167,15 +169,15 @@ public class StoreService {
     @Transactional
     @Scheduled(cron="0 0 * * * *")
     public void findPopular() {
-        List<Store> popularStores = storeRepository.findPopular();
-        List<StoreDto> storeDtos = new ArrayList<>();
-        for (Store store : popularStores) {
-            StoreDto response = new StoreDto(store);
-            storeDtos.add(response);
+        List<Market> popularMarket = marketRepository.findPopular();
+        List<MarketDto> marketDtos = new ArrayList<>();
+        for (Market market : popularMarket) {
+            MarketDto response = new MarketDto(market);
+            marketDtos.add(response);
         }
 
-        PopularList.popular = storeDtos;
-        storeRepository.deleteClick();
+        PopularList.popular = marketDtos;
+        marketRepository.deleteClick();
     }
 
     public void updateStore(StoreDto store) {

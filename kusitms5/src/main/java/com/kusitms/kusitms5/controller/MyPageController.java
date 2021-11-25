@@ -43,9 +43,17 @@ public class MyPageController {
 
     // true:저장완료, false: 저장못함
     @PostMapping("/mypage/register-question")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
+    })
     public ResponseEntity<Boolean> registerQuestion(
         @Valid @RequestBody QuestionDto questionDto
     ){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        Optional<User> user = userService.getUserWithAuthorities(id);
+
+        questionDto.setUsername(user.get().getNickname());
         return ResponseEntity.ok(myPageService.registerQuestion(questionDto));
     }
 

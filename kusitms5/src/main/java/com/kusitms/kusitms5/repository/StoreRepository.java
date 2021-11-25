@@ -57,12 +57,7 @@ public class StoreRepository {
         em.persist(modify);
     } // 가게 수정사항 작성
 
-    public void addClick(Long store) {
-        em.createQuery("UPDATE Store s SET s.storeClick = s.storeClick + 1" +
-                        "WHERE s.storeId = :store")
-                .setParameter("store", store)
-                .executeUpdate();
-    }// 가게 수정사항 작성
+
     
     public List<Review> findReviewList(Store store){ // 가게 별 리뷰 전체 불러오기
         return em.createQuery("select r from Review r where r.store = :store",
@@ -82,18 +77,7 @@ public class StoreRepository {
                 .getResultList();
     }
 
-    public List<Store> findPopular(){ // 상위 인기 10위
-        return em.createQuery("SELECT s FROM Store s ORDER BY s.storeClick DESC",
-                Store.class)
-                .setFirstResult(0)
-                .setMaxResults(10)
-                .getResultList();
-    }
 
-    public void deleteClick(){
-        em.createQuery("UPDATE Store s SET s.storeClick = 0")
-                .executeUpdate();
-    }
 
     public void resetScore(double score, Long store){
         em.createQuery("UPDATE Store s SET s.storeScore = :score Where s.storeId = :store")

@@ -113,6 +113,7 @@ public class MyPageService {
         store.setStorePhone(storeDto.getStorePhone());
         store.setStoreTime(storeDto.getStoreTime());
         store.setStoreLink(storeDto.getStoreLink());
+        store.setStoreScore(0);
         storeRepository.saveStore(store);
 
         return storeDto;

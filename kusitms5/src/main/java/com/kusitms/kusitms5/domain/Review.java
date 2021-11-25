@@ -40,6 +40,10 @@ public class Review {
     @JsonBackReference
     private List<Report> reports = new ArrayList<>();
 
+    @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private ReviewImage image;
+
     public static Review createReview(User user, Store store, String memo, double score){
 
         Review review = new Review();

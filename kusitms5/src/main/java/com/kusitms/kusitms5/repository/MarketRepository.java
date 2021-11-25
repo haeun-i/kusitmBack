@@ -19,6 +19,26 @@ public class MarketRepository {
                 .getResultList();
     }
 
+    public void addClick(Long market) {
+        em.createQuery("UPDATE Market m SET m.marketClick = m.marketClick + 1" +
+                "WHERE m.marketId = :market")
+                .setParameter("market", market)
+                .executeUpdate();
+    }
+
+    public void deleteClick(){
+        em.createQuery("UPDATE Market m SET m.marketClick = 0")
+                .executeUpdate();
+    }
+
+    public List<Market> findPopular(){ // 상위 인기 10위
+        return em.createQuery("SELECT m FROM Market m ORDER BY m.marketClick DESC",
+                Market.class)
+                .setFirstResult(0)
+                .setMaxResults(10)
+                .getResultList();
+    }
+
     public List<Market> findPermanent(){ // 상설장 목록 불러오기
         return em.createQuery("select m from Market m where m.marketType = 0",
                 Market.class)

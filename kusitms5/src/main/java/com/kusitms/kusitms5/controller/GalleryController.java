@@ -5,7 +5,7 @@ import com.kusitms.kusitms5.domain.EventImage;
 import com.kusitms.kusitms5.domain.Store;
 import com.kusitms.kusitms5.dto.EventImageDto;
 import com.kusitms.kusitms5.dto.MarketDto;
-import com.kusitms.kusitms5.dto.StoreImageDto;
+import com.kusitms.kusitms5.dto.ReviewImageDto;
 import com.kusitms.kusitms5.response.BasicResponse;
 import com.kusitms.kusitms5.response.CommonResponse;
 import com.kusitms.kusitms5.service.ImageService;
@@ -67,24 +67,12 @@ public class GalleryController {
         return ResponseEntity.ok().body(new CommonResponse<List<String>>(paths));
     }
 
-    @PostMapping("/storeImage/post")
-    public ResponseEntity<? extends BasicResponse> storeUpload(MultipartFile file, String storeName) throws IOException {
-        String imgPath = s3Service.upload(file);
-        String imgName = file.getOriginalFilename();
-        Store store = storeService.findRealOne(storeName);
-
-        StoreImageDto storeImageDto = new StoreImageDto(imgName, imgPath, store);
-
-        imageService.saveStoreImage(storeImageDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/storeImage/store")
+    @GetMapping("/storeImage/store") // 가게 별 리뷰 이미지 전부 반환
     public ResponseEntity<? extends BasicResponse> eventPay(String storeName) throws IOException {
         Store store = storeService.findRealOne(storeName);
-        List<StoreImageDto> images =  imageService.findStoreImage(store.getStoreId());
+        List<ReviewImageDto> images =  imageService.findStoreImage(store.getStoreId());
         List<String> paths = new ArrayList<>();
-        for(StoreImageDto image : images){
+        for(ReviewImageDto image : images){
             String path = image.getFilePath();
             paths.add(path);
         }

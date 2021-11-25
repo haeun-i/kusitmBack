@@ -15,10 +15,12 @@ public class reviewDto {
     String reviewUserName;
     String reviewMemo;
     double reviewScore;
+    String reviewImagePath;
 
     public reviewDto(Review review){
         reviewUserName = review.getUser().getNickname();
         reviewMemo = review.getReviewMemo();
         reviewScore = review.getReviewScore();
+        reviewImagePath = review.getImage().getFilepath();
     }
 }
