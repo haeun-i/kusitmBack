@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 public class PopularList {
 
-    public static List<StoreDto> popular;
+    public static List<MarketDto> popular;
 
 }

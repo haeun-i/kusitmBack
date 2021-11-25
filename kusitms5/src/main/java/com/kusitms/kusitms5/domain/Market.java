@@ -31,6 +31,9 @@ public class Market {
     @Column(name = "market_address", nullable = false)
     private String marketAddress; // 5일장 여부
 
+    @Column(name = "market_click", nullable = false)
+    private int marketClick;
+
     @OneToMany(mappedBy = "market", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Store> stores = new ArrayList<>();

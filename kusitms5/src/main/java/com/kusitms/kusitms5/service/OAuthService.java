@@ -5,6 +5,7 @@ import com.kusitms.kusitms5.domain.User;
 import com.kusitms.kusitms5.dto.OAuthAttributes;
 import com.kusitms.kusitms5.dto.UserProfile;
 import com.kusitms.kusitms5.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -30,6 +31,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         OAuth2UserService delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest); // OAuth 서비스(github, google, naver)에서 가져온 유저 정보를 담고있음
 
+        System.out.println(userRequest);
         String registrationId = userRequest.getClientRegistration()
                 .getRegistrationId(); // OAuth 서비스 이름(ex. github, naver, google)
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
@@ -43,6 +45,9 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 //        Authority authority = Authority.builder()
 //                .authorityName("ROLE_USER")
 //                .build();
+
+//        String AccessToken = userRequest.getAccessToken().getTokenValue();
+
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),

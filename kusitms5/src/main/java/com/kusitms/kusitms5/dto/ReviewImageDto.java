@@ -1,34 +1,35 @@
 package com.kusitms.kusitms5.dto;
 
+import com.kusitms.kusitms5.domain.Review;
+import com.kusitms.kusitms5.domain.ReviewImage;
 import com.kusitms.kusitms5.domain.Store;
-import com.kusitms.kusitms5.domain.StoreImage;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class StoreImageDto {
+public class ReviewImageDto {
     private Long id;
     private String title;
     private String filePath;
-    private Store store;
+    private Review review;
 
-    public StoreImage toEntity(){
-        StoreImage build = StoreImage.builder()
+    public ReviewImage toEntity(){
+        ReviewImage build = ReviewImage.builder()
                 .id(id)
                 .title(title)
                 .filePath(filePath)
-                .store(store)
+                .review(review)
                 .build();
         return build;
     }
 
     @Builder
-    public StoreImageDto(String title, String filePath, Store store) {
+    public ReviewImageDto(String title, String filePath, Review review) {
         //this.id = id;
         this.title = title;
         this.filePath = filePath;
-        this.store = store;
+        this.review = review;
     }
 }

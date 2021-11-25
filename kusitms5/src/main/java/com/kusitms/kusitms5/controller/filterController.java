@@ -42,11 +42,6 @@ public class filterController {
         return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(markets));
     }
 
-    @GetMapping(value = "/") // 모든 비상설시장 목록 조회
-    public String showmain() {
-        return "index";
-    }
-
 
     @GetMapping(value = "/market/filter/gift") // 온누리상품권 사용 가능 점포 목록 조회
     public ResponseEntity<? extends BasicResponse> storeGiftList() {
@@ -75,7 +70,7 @@ public class filterController {
 
     @GetMapping(value = "/popular/store") // 많이 검색된 순서대로 조회
     public ResponseEntity<? extends BasicResponse> marketPopular() {
-        return ResponseEntity.ok().body(new CommonResponse<List<StoreDto>>(PopularList.popular));
+        return ResponseEntity.ok().body(new CommonResponse<List<MarketDto>>(PopularList.popular));
     }
 
 }
