@@ -167,7 +167,7 @@ public class StoreService {
     }
 
     @Transactional
-    @Scheduled(cron="0 0 0 * * *")
+    @Scheduled(cron="0 * * * * *")
     public void findPopular() {
         List<Market> popularMarket = marketRepository.findPopular();
         List<MarketDto> marketDtos = new ArrayList<>();
