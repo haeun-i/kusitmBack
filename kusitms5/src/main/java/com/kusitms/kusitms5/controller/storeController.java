@@ -57,21 +57,14 @@ public class storeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", required = true, dataType = "String", paramType = "header")
     })
-    public ResponseEntity<? extends BasicResponse> writeReview(MultipartFile file,
-                                                               String storeName,
+    public ResponseEntity<? extends BasicResponse> writeReview(String storeName,
                                                                String memo,
-                                                               double score) throws IOException {
+                                                               double score) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         Store store = storeService.findRealOne(storeName);
 
         Review review = storeService.addReview(userName, store.getStoreId(), memo, score);
-
-        String imgPath = s3Service.upload(file);
-        String imgName = file.getOriginalFilename();
-
-        ReviewImageDto reviewImageDto = new ReviewImageDto(imgName, imgPath, review);
-        imageService.saveReviewImage(reviewImageDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
