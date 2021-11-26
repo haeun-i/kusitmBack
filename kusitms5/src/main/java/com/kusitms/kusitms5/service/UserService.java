@@ -87,12 +87,19 @@ public class UserService {
     };
 
     @Transactional
+    public void modifyPassword(User user, String password){
+        String realPassword = passwordEncoder.encode(password);
+        user.setPassword(realPassword);
+        userRepository.save(user);
+    };
+
+    @Transactional
     public void delete(User user){ // 수정 필요함
         List<Question> questions = questionRepository.UserQuestionList(user.getUserId());
         List<Modify> modifies = modifyRepository.UserModifyList(user.getUserId());
         List<Review> reviews = storeRepository.findUserReview(user);
 
-        Optional<User> admin = userRepository.findByUsername("haeuni");
+        Optional<User> admin = userRepository.findByUsername("admin");
         for(Question question : questions){
             question.setUser(admin.get());
         }
