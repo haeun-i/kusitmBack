@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface EventImageRepository extends JpaRepository<EventImage, Long> {
 
-    @Query(value="select * from event_image", nativeQuery = true)
+    @Query(value="select * from event_image WHERE pay=false", nativeQuery = true)
     List<EventImage> EventList();
 
     @Query(value="select * from event_image WHERE pay=true", nativeQuery = true)
