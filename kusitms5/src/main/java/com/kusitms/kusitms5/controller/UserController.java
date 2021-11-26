@@ -2,6 +2,7 @@ package com.kusitms.kusitms5.controller;
 
 import com.kusitms.kusitms5.domain.Store;
 import com.kusitms.kusitms5.domain.User;
+import com.kusitms.kusitms5.dto.ResponseDto;
 import com.kusitms.kusitms5.dto.UserDto;
 import com.kusitms.kusitms5.dto.StoreDto;
 import com.kusitms.kusitms5.repository.StoreRepository;
@@ -125,14 +126,26 @@ public class UserController {
 
     // 아이디 중복확인 : 존재하면 true, 없으면 false
     @GetMapping("/check-duplicate/id/{username}")
-    public ResponseEntity<Boolean> vaildateId(@PathVariable String username) {
-        return ResponseEntity.ok(userService.validateDuplicateUsername(username));
+    public ResponseEntity<? extends BasicResponse> vaildateId(@PathVariable String username) {
+        if(userService.validateDuplicateUsername(username) == true) {
+            ResponseDto r = new ResponseDto("true");
+            return ResponseEntity.ok().body(new CommonResponse<ResponseDto>(r));
+        }else {
+            ResponseDto r = new ResponseDto("false");
+            return ResponseEntity.ok().body(new CommonResponse<ResponseDto>(r));
+        }
     }
 
     // 닉네임 중복확인 : 존재하면 true, 없으면 false
     @GetMapping("/check-duplicate/nickname/{nickname}")
-    public ResponseEntity<Boolean> vaildateNickname(@PathVariable String nickname) {
-        return ResponseEntity.ok(userService.validateDuplicateNickname(nickname));
+    public ResponseEntity<? extends BasicResponse> vaildateNickname(@PathVariable String nickname) {
+        if(userService.validateDuplicateNickname(nickname) == true) {
+            ResponseDto r = new ResponseDto("true");
+            return ResponseEntity.ok().body(new CommonResponse<ResponseDto>(r));
+        }else {
+            ResponseDto r = new ResponseDto("false");
+            return ResponseEntity.ok().body(new CommonResponse<ResponseDto>(r));
+        }
     }
 
     // push알림 테스트
@@ -165,7 +178,8 @@ public class UserController {
         Optional<User> user = userService.getUserWithAuthorities(id);
 
         userService.modifyPassword(user.get(), password);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        return ResponseEntity.ok().body(new CommonResponse<String>("ok"));
     }
 
     @DeleteMapping("/delete/user")
